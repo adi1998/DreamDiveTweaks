@@ -261,3 +261,25 @@ ImguiPluginMap = ImguiPluginMap or {}
 public.RegisterPluginImGui = function (drawFunc, pluginKey)
     ImguiPluginMap[pluginKey] = drawFunc
 end
+
+-- mod.StartEndlessRun()
+
+-- print(GameData.nefe)
+-- game.GameData.nefe = nil
+-- game.GameData.nefe = 1
+-- print(GameData.nefe)
+-- game.RemoveInputBlock({Name = "RunClearScreenClose"})
+
+-- game.OpenRunClearScreen()
+-- local function openDeathRunClearScreen()
+--     game.ScreenData.RunClear[_PLUGIN.guid .. "DeathScreen"] = true
+--     game.ScreenData.RunClear.ComponentData.DreamRunTitleText.Text = "G a m e  O v e r !"
+--     game.ScreenData.RunClear.ComponentData.UnderworldTitleText.Text = "G a m e  O v e r !"
+--     game.ShowHealthUI( { FadeDuration = 0.4, IgnoreLifePips = true } )
+--     game.ShowManaMeter( { FadeDuration = 0.4 } )
+--     game.OpenRunClearScreen()
+--     game.ScreenData.RunClear.ComponentData.DreamRunTitleText.Text = "RunClearScreen_Title"
+--     game.ScreenData.RunClear[_PLUGIN.guid .. "DeathScreen"] = nil
+-- end
+
+-- game.thread(openDeathRunClearScreen)

@@ -306,7 +306,7 @@ function GenerateRoute()
         end
     end
     print("GeneratedRoute", dump(route))
-    return route
+    return route, biomeList
 end
 
 if not WrappedNextDream then
@@ -354,7 +354,7 @@ if not WrappedNextDream then
             local nextRoomSet = nil
 
             if game.IsEmpty( game.CurrentRun.DreamBiomePool ) then
-                game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"] = GenerateRoute()
+                game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"], game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"] = GenerateRoute()
                 nextRoomSet = game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"][1]
                 game.CurrentRun.DreamBiomePool = game.DeepCopyTable(all_biomes)
             else

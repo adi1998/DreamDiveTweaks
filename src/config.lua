@@ -40,6 +40,7 @@ local config = {
   late_biome_damage_ramp = 100,
   late_biome_health_ramp = 100,
   late_biome_start = 5,
+  show_game_over_screen = true,
 }
 
 local configDesc = {
@@ -58,6 +59,7 @@ local configDesc = {
   late_biome_damage_ramp = "Enemy damage ramp for biomes >= late_biome_start",
   late_biome_health_ramp = "Enemy health ramp for biomes >= late_biome_start",
   late_biome_start = "Biome depth to start ramping up the scaling from",
+  show_game_over_screen = "Show Game Over screen on losing in a Dream Dive"
 }
 
 return config, configDesc

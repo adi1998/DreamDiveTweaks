@@ -160,42 +160,40 @@ modutil.mod.Path.Wrap("MultipliedSpeedDodgeSetup", function (base, hero, traitAr
 
         local totalSpeedChange = 1 + ScaleDodge(linearLimit, decay, count, delta, softcapIncrement)
 
-        if not game.SessionMapState.OlympianBoonCountBoost or game.SessionMapState.OlympianBoonCountBoost ~= totalBoost then
-            if game.SessionMapState.OlympianBoonCountBoost then
-                game.ApplyUnitPropertyChanges( game.CurrentRun.Hero, game.SessionMapState.OlympianBoonCountBoostPropertyChanges, true, true )
-            end
-            local allPropertyChanges =
-            {
-                {
-                    LifeProperty = "DodgeChance",
-                    ChangeValue = totalSpeedChange - 1,
-                    ChangeType = "Add",
-                    DataValue = false,
-                },
-                {
-                    UnitProperty = "Speed",
-                    ChangeType = "Multiply",
-                    ChangeValue = totalSpeedChange,
-                },
-                {
-                    WeaponNames = { "WeaponSprint" },
-                    WeaponProperty = "SelfVelocity",
-                    ChangeValue = totalSpeedChange,
-                    ChangeType = "Multiply",
-                    ExcludeLinked = true,
-                },
-                {
-                    WeaponNames = { "WeaponSprint" },
-                    WeaponProperty = "SelfVelocityCap",
-                    ChangeValue = totalSpeedChange,
-                    ChangeType = "Multiply",
-                    ExcludeLinked = true,
-                },
-            }
-            game.SessionMapState.OlympianBoonCountBoostPropertyChanges = allPropertyChanges
-            game.SessionMapState.OlympianBoonCountBoost = totalSpeedChange
-            game.ApplyUnitPropertyChanges( game.CurrentRun.Hero, game.SessionMapState.OlympianBoonCountBoostPropertyChanges )
+        if game.SessionMapState.OlympianBoonCountBoost then
+            game.ApplyUnitPropertyChanges( game.CurrentRun.Hero, game.SessionMapState.OlympianBoonCountBoostPropertyChanges, true, true )
         end
+        local allPropertyChanges =
+        {
+            {
+                LifeProperty = "DodgeChance",
+                ChangeValue = totalSpeedChange - 1,
+                ChangeType = "Add",
+                DataValue = false,
+            },
+            {
+                UnitProperty = "Speed",
+                ChangeType = "Multiply",
+                ChangeValue = totalSpeedChange,
+            },
+            {
+                WeaponNames = { "WeaponSprint" },
+                WeaponProperty = "SelfVelocity",
+                ChangeValue = totalSpeedChange,
+                ChangeType = "Multiply",
+                ExcludeLinked = true,
+            },
+            {
+                WeaponNames = { "WeaponSprint" },
+                WeaponProperty = "SelfVelocityCap",
+                ChangeValue = totalSpeedChange,
+                ChangeType = "Multiply",
+                ExcludeLinked = true,
+            },
+        }
+        game.SessionMapState.OlympianBoonCountBoostPropertyChanges = allPropertyChanges
+        game.SessionMapState.OlympianBoonCountBoost = totalSpeedChange
+        game.ApplyUnitPropertyChanges( game.CurrentRun.Hero, game.SessionMapState.OlympianBoonCountBoostPropertyChanges )
         trait.CurrentBoonCountDodgeChance = game.SessionMapState.OlympianBoonCountBoost - 1
         return
     end
