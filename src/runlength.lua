@@ -237,11 +237,19 @@ end)
 
 modutil.mod.Path.Wrap("GetVisitedBiomeIcons", function (base, run)
     local tooltipData = {}
-	for i=1, math.max( #(run.BiomeVisitOrder), 4) do
+    local route = run[_PLUGIN.guid .. "GeneratedRoute"] or {}
+	for i=1, math.max( #(run.BiomeVisitOrder), 4, #route) do
 		local icon = game.RoomSetIcons[run.BiomeVisitOrder[i]] or "BiomeMysteryIcon"
 		tooltipData[i] = game.IconData[icon].TexturePath
 	end
 	return tooltipData
+end)
+
+modutil.mod.Path.Wrap("RunClearMessagePresentation", function (base, screen, message, tooltipData)
+    if message == "ClearDreamRun" and type(tooltipData) == "table" and #tooltipData > 4 then
+        message = message .. #tooltipData
+    end
+    return base(screen, message, tooltipData)
 end)
 
 --#endregion

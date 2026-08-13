@@ -2,8 +2,11 @@
 
 ## [Unreleased]
 
-- Add optional dependancy on ZJ
-- ImGui menu perf improvements
+## [1.7.5] - 2026-08-13
+
+- Minor GameOverScreen compat (failed runs will show the remaining biomes as ?)
+- ImGui perf improvements
+- Optional ZJ dependency
 
 ## [1.7.4] - 2026-08-01
 
@@ -30,7 +33,7 @@
 
 ## [1.7.0] - 2026-07-05
 
-- Add support for dependant mods to draw their ImGui in this mods ImGui window
+- Add support for dependant mods to draw their ImGui in this mod's ImGui window
 - Potential fix for shop music
 - Block purging well from spawning if normal well shop is not eligible
 
@@ -117,7 +120,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.4...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.5...HEAD
+[1.7.5]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.4...1.7.5
 [1.7.4]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.3...1.7.4
 [1.7.3]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.2...1.7.3
 [1.7.2]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.1...1.7.2

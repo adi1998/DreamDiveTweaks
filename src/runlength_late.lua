@@ -10,15 +10,6 @@ modutil.mod.Path.Context.Env("ShowRunHistory", function ( screen, button )
     end)
 end)
 
-modutil.mod.Path.Context.Env("OpenRunClearScreen", function (  )
-    modutil.mod.Path.Wrap("RunClearMessagePresentation", function (base, screen, message, tooltipData)
-        if message == "ClearDreamRun" and type(tooltipData) == "table" and #tooltipData > 4 then
-            message = message .. #tooltipData
-        end
-        return base(screen, message, tooltipData)
-    end)
-end)
-
 --#endregion
 
 --#region NPC scaling
