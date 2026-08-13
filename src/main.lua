@@ -99,16 +99,19 @@ function dump(o, depth)
     end
 end
 
+npcRando = rom.mods["zerp-NPCRoomRandomizer"]
+zj = rom.mods["NikkelM-Zagreus_Journey"]
+
 local function on_ready()
     -- what to do when we are ready, but not re-do on reload.
     if config.enabled == false then return end
     mod = modutil.mod.Mod.Register(_PLUGIN.guid)
     mod.config = config
 
-    mod.IsZagAvailable = rom.mods["NikkelM-Zagreus_Journey"] and
-                         rom.mods["NikkelM-Zagreus_Journey"].IsModEnabledAndInstallationValid and
-                         rom.mods["NikkelM-Zagreus_Journey"].IsModEnabledAndInstallationValid() and
-                         not rom.mods["NikkelM-Zagreus_Journey"].GetModConfigValueByLeafKey("z_ExcludeFromDreamDives")
+    mod.IsZagAvailable = zj and
+                         zj.IsModEnabledAndInstallationValid and
+                         zj.IsModEnabledAndInstallationValid() and
+                         not zj.GetModConfigValueByLeafKey("z_ExcludeFromDreamDives")
 
     mod.IsZag = mod.IsZagAvailable and (not config.biome_pool.disable_zag_biomes)
 
@@ -128,7 +131,7 @@ local function on_ready()
     import 'npc_scaling.lua'
     import 'dodge.lua'
     import 'scorch.lua'
-    -- import 'endless/endless.lua'
+    import 'endless/endless.lua'
     import 'endless/runclearscreen.lua'
 end
 

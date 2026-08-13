@@ -4,7 +4,12 @@ modutil.mod.Path.Context.Env("ShowRunHistory", function ( screen, button )
     modutil.mod.Path.Wrap("ModifyTextBox", function (base, args)
         args = args or {}
         if args.Text == "RunHistoryScreen_DreamBiomeVisitOrder" and type(args.LuaValue) == "table" and #args.LuaValue > 4 then
-            args.Text = args.Text .. #args.LuaValue
+            local iconTemplate = "{!TooltipData[{{index}}]}"
+            args.Text = string.gsub(iconTemplate, "{{index}}", 1)
+            for i = 2, math.max(#args.LuaValue, 12) do
+                args.Text = args.Text .. " " .. string.gsub(iconTemplate, "{{index}}", i)
+            end
+            args.Text = "- " .. args.Text .. "- "
         end
         return base(args)
     end)

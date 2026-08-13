@@ -17,9 +17,17 @@ game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
     TextArgs = game.UIData.ContextualButtonFormatRight,
     Requirements =
     {
-        Skip = true,
         {
             PathTrue = {"CurrentRun", "IsDreamRun"}
+        },
+        {
+            Path = { "CurrentRun", "ScreenViewRecord", "RunClear" },
+            Comparison = "==",
+            Value = 1,
+        },
+        {
+            PathFromSource = true,
+            PathFalse = { "zerp-GameOverScreen" .. "SkipRecordRunCleared" }
         }
     }
 }
@@ -44,10 +52,10 @@ local function openDeathRunClearScreen()
     game.ScreenData.RunClear[_PLUGIN.guid .. "DeathScreen"] = nil
 end
 
-modutil.mod.Path.Wrap("DeathPresentation", function (base, ...)
-    base(...)
-    if game.CurrentRun.IsDreamRun and config.show_game_over_screen then
-        game.thread(openDeathRunClearScreen)
-        game.waitUntil(_PLUGIN.guid .. "CloseRunClearScreenTriggered")
-    end
-end)
+-- modutil.mod.Path.Wrap("DeathPresentation", function (base, ...)
+--     base(...)
+--     if game.CurrentRun.IsDreamRun and config.show_game_over_screen then
+--         game.thread(openDeathRunClearScreen)
+--         game.waitUntil(_PLUGIN.guid .. "CloseRunClearScreenTriggered")
+--     end
+-- end)
