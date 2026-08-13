@@ -133,3 +133,47 @@ modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
     end
     return base(unit, currentRun, args)
 end)
+
+local totalDodge = 0
+local totalCappedDodge = 0
+local dodgeCap = 1
+
+modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
+    if args.DestinationId == game.CurrentRun.Hero.ObjectId and args.Property == "DodgeChance" then
+        print(args.ValueChangeType, args.Value)
+        if args.ValueChangeType == "Add" then
+            local value = args.Value
+            if totalDodge < dodgeCap then
+                if totalDodge + args.Value > dodgeCap then
+                    args.Value = dodgeCap - totalDodge
+                else
+
+                end
+            else
+                if totalDodge + args.Value < dodgeCap then
+                    args.Value = dodgeCap - (totalDodge + args.Value)
+                else
+                    args.Value = 0
+                end
+            end
+
+            totalDodge = totalDodge + value
+            totalCappedDodge = totalCappedDodge + args.Value
+            print("totalDodge", totalDodge)
+            print("totalCappedDodge", totalCappedDodge)
+        end
+    end
+    return base(args)
+end)
+
+modutil.mod.Path.Wrap("LeaveRoom", function (base, ...)
+    totalDodge = 0
+    totalCappedDodge = 0
+    return base(...)
+end)
+
+modutil.mod.Path.Wrap("DeathAreaSwitchRoom", function (base, ...)
+    totalDodge = 0
+    totalCappedDodge = 0
+    return base(...)
+end)
