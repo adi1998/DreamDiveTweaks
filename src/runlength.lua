@@ -523,7 +523,7 @@ else
     }
 end
 
---endregion
+--#endregion
 
 modutil.mod.Path.Wrap("ZagreusDeathDefiancePresentation", function (base, boss, currentRun, aiStage)
     boss.MaxHealth = aiStage.NewMaxHealth or boss.MaxHealth

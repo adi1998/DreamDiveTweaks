@@ -123,7 +123,8 @@ end
 local scalingCache = {}
 
 modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
-    if unit.DreamBiomeData and currentRun.IsDreamRun and currentRun.EnteredBiomes > 12 then
+    if unit.DreamBiomeData and unit.DreamBiomeData[12] and currentRun.IsDreamRun and currentRun.EnteredBiomes > 12 then
+        print("scaling unit ", unit.Name, "for depth ", currentRun.EnteredBiomes)
         scalingCache[unit.Name] = scalingCache[unit.Name] or {}
         scalingCache[unit.Name].DreamBiomeData = scalingCache[unit.Name].DreamBiomeData or {}
         scalingCache[unit.Name].DreamBiomeData[currentRun.EnteredBiomes] = scalingCache[unit.Name].DreamBiomeData[currentRun.EnteredBiomes] or mod.GetScaledDreamBiomeData(unit.DreamBiomeData, currentRun.EnteredBiomes)
@@ -136,7 +137,7 @@ end)
 
 local totalDodge = 0
 local totalCappedDodge = 0
-local dodgeCap = 1
+local dodgeCap = 0.96
 
 modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
     if args.DestinationId == game.CurrentRun.Hero.ObjectId and args.Property == "DodgeChance" then
@@ -151,7 +152,7 @@ modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
                 end
             else
                 if totalDodge + args.Value < dodgeCap then
-                    args.Value = dodgeCap - (totalDodge + args.Value)
+                    args.Value = (totalDodge + args.Value) - dodgeCap
                 else
                     args.Value = 0
                 end
@@ -177,3 +178,26 @@ modutil.mod.Path.Wrap("DeathAreaSwitchRoom", function (base, ...)
     totalCappedDodge = 0
     return base(...)
 end)
+
+local NPC_fucntions = {
+    "EchoChoice",
+    "ArachneCostumeChoice",
+    "NarcissusBenefitChoice",
+    "MedeaCurseChoice",
+    "CirceBlessingChoice",
+    "IcarusBenefitChoice",
+}
+
+for _, functionName in ipairs(NPC_fucntions) do
+    modutil.mod.Path.Wrap(functionName, function (base, source, args, screen)
+        local options = {}
+        args = game.ShallowCopyTable(args)
+        for key, value in pairs(args.UpgradeOptions) do
+            if not game.HeroHasTrait(value.ItemName) then
+                table.insert(options, value)
+            end
+        end
+        args.UpgradeOptions = options
+        return base(source, args, screen)
+    end)
+end
