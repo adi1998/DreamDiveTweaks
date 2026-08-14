@@ -208,7 +208,7 @@ modutil.mod.Path.Wrap("RunClearMessagePresentation", function (base, screen, mes
     if message == "ClearDreamRun" and type(tooltipData) == "table" and #tooltipData > 4 then
         local iconTemplate = "{!TooltipData[{{index}}]}"
         message = string.gsub(iconTemplate, "{{index}}", 1)
-        for i = 2, math.max(#tooltipData, 20) do
+        for i = 2, #tooltipData do
             message = message .. " " .. string.gsub(iconTemplate, "{{index}}", i)
         end
     end
