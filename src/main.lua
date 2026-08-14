@@ -131,6 +131,7 @@ local function on_ready()
     import 'npc_scaling.lua'
     import 'dodge.lua'
     import 'scorch.lua'
+
     import 'endless/endless.lua'
     import 'endless/runclearscreen.lua'
 end

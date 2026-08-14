@@ -139,8 +139,49 @@ local totalDodge = 0
 local totalCappedDodge = 0
 local dodgeCap = 0.96
 
+game.OnAnyLoad
+{
+    function ()
+        if game.CurrentRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
+            game.zerpDreamDiveTweaksEndlessDodgeMessage = "Capped to " .. dodgeCap * 100 .. "% in Endless."
+        else
+            game.zerpDreamDiveTweaksEndlessDodgeMessage = ""
+        end
+    end
+}
+
+local locales = {
+    "de",
+    "el",
+    "en",
+    "es",
+    "fr",
+    "it",
+    "ja",
+    "ko",
+    "pl",
+    "pt-BR",
+    "ru",
+    "tr",
+    "uk",
+    "zh-CN",
+    "zh-TW",
+}
+
+for _, locale in pairs(locales) do
+    local filePath = rom.path.combine(rom.paths.Content, "Game\\Text\\" .. locale .."\\HelpText." .. locale .. ".sjson")
+    sjson.hook(filePath, function (data)
+        for _, value in pairs(data.Texts) do
+            if value.Id == "Dodge" then
+                value.Description = value.Description .. " {$zerpDreamDiveTweaksEndlessDodgeMessage}"
+            end
+        end
+        return data
+    end)
+end
+
 modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
-    if args.DestinationId == game.CurrentRun.Hero.ObjectId and args.Property == "DodgeChance" then
+    if args.DestinationId == game.CurrentRun.Hero.ObjectId and args.Property == "DodgeChance" and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
         print(args.ValueChangeType, args.Value)
         if args.ValueChangeType == "Add" then
             local value = args.Value
