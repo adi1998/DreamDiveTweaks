@@ -1,7 +1,6 @@
 game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
 {
     Graphic = "ContextualActionButton",
-    GroupName = "Combat_Menu_TraitTray_Overlay",
     X = game.UIData.ContextualButtonXRight,
     BottomOffset = game.UIData.ContextualButtonBottomOffset + 50,
     Alpha = 0.0,
@@ -27,7 +26,7 @@ game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
         },
         {
             PathFromSource = true,
-            PathFalse = { "zerp-GameOverScreen" .. "SkipRecordRunCleared" }
+            PathFalse = { GameOver_guid .. "SkipRecordRunCleared" }
         },
         {
             PathFromSource = true,
@@ -36,10 +35,9 @@ game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
     }
 }
 
-table.insert(game.ScreenData.RunClear.ComponentData.Order, _PLUGIN.guid .. "EndlessButton")
-
 function mod.StartEndlessRun(screen)
     game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] = true
+    print("Starting endless mode.")
     game.CloseRunClearScreen(screen)
 end
 
@@ -61,7 +59,7 @@ end
 modutil.mod.Path.Wrap("DeathPresentation", function (base, ...)
     base(...)
     if game.CurrentRun.IsDreamRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] and not
-            (rom.mods["zerp-GameOverScreen"] and rom.mods["zerp-GameOverScreen"].config and rom.mods["zerp-GameOverScreen"].config.enabled ) then
+            (gameOver and gameOver.config and gameOver.config.enabled ) then
         game.thread(openDeathRunClearScreen)
         game.waitUntil(_PLUGIN.guid .. "CloseRunClearScreenTriggered")
     end

@@ -167,7 +167,7 @@ for npc, _ in pairs(npcsToScale) do
 end
 
 if mod.IsZagAvailable then
-    modutil.mod.Path.Wrap("NikkelM-Zagreus_Journey".. "." .. "ScaleNPCTraitsForDreamRun", function (base, upgradeOptions)
+    modutil.mod.Path.Wrap(ZJ_guid .. "." .. "ScaleNPCTraitsForDreamRun", function (base, upgradeOptions)
         if game.CurrentRun.EnteredBiomes > 4 and game.CurrentRun.EnteredBiomes <= 6 then
             for _, item in pairs(upgradeOptions) do
                 if (game.TraitData[item.ItemName].RarityLevels or {})["Heroic"] then

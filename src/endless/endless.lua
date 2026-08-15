@@ -60,9 +60,11 @@ function mod.CleanupBiomeVisits()
     game.CurrentRun.RoomCreations = {}
     game.CurrentRun.RoomCountCache = {}
 
+    game.CurrentRun.FieldsMaxDoorsRolled = 0
+
     if npcRando and npcRando.config and npcRando.config.enabled then
-        game.CurrentRun[_PLUGIN.guid .. "SwappedStoryMap"] = {}
-        game.CurrentRun[_PLUGIN.guid .. "StoryRoomsCreated"] = {}
+        game.CurrentRun[NPCRando_guid .. "SwappedStoryMap"] = {}
+        game.CurrentRun[NPCRando_guid .. "StoryRoomsCreated"] = {}
     end
 
     -- for i = 1, #game.CurrentRun.RoomHistory do
@@ -74,6 +76,13 @@ function mod.CleanupBiomeVisits()
     game.CurrentRun.RoomHistory = {}
     game.CurrentRun.BiomesReached = {}
     game.CurrentRun.MusicRecord = {}
+
+    -- ZJ
+    if mod.IsZagAvailable then
+        game.CurrentRun.CompletedStyxWings = 0
+        game.CurrentRun.ThanatosSpawns = 0
+        game.CurrentRun.SupportAINames = {}
+    end
 end
 
 modutil.mod.Path.Wrap("SelectNextDreamBiome", function(base, source, args)
@@ -84,9 +93,10 @@ modutil.mod.Path.Wrap("SelectNextDreamBiome", function(base, source, args)
                 game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"] or {}
             )
             game.FYShuffle(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"])
+            print("New shuffled biome order", dump(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"]))
             mod.CleanupBiomeVisits()
         end
-        local nextRoomSet = game.RemoveValueAndCollapse(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"], math.random(#game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"]))
+        local nextRoomSet = table.remove(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"])
         game.CurrentRun.CurrentRoom.NextRoomSet = { nextRoomSet }
         return
     end
@@ -123,7 +133,9 @@ end
 local scalingCache = {}
 
 modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
-    if unit.DreamBiomeData and unit.DreamBiomeData[12] and currentRun.IsDreamRun and currentRun.EnteredBiomes > 12 then
+    currentRun = currentRun or game.CurrentRun
+	args = args or {}
+    if unit and unit.DreamBiomeData and unit.DreamBiomeData[12] and currentRun and currentRun.IsDreamRun and currentRun.EnteredBiomes > 12 then
         print("scaling unit ", unit.Name, "for depth ", currentRun.EnteredBiomes)
         scalingCache[unit.Name] = scalingCache[unit.Name] or {}
         scalingCache[unit.Name].DreamBiomeData = scalingCache[unit.Name].DreamBiomeData or {}
@@ -228,6 +240,10 @@ local NPC_fucntions = {
     "CirceBlessingChoice",
     "IcarusBenefitChoice",
 }
+
+if mod.IsZagAvailable then
+    table.insert(NPC_fucntions, ZJ_guid .. "." .. "ModsNikkelMHadesBiomesBenefitChoice")
+end
 
 for _, functionName in ipairs(NPC_fucntions) do
     modutil.mod.Path.Wrap(functionName, function (base, source, args, screen)

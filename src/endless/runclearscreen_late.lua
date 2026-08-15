@@ -7,3 +7,14 @@ modutil.mod.Path.Context.Env("OpenRunClearScreen", function ()
         return base()
     end)
 end)
+
+if mod.IsZagAvailable then
+    modutil.mod.Path.Context.Env(ZJ_guid .. "." .. "ModsNikkelMHadesBiomesBenefitChoice", function (source, args, screen)
+        modutil.mod.Path.Wrap("RandomSynchronize", function (base, offset, rngId)
+            if game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
+                return base(math.random(1,9), rngId)
+            end
+            return base(offset, rngId)
+        end)
+    end)
+end
