@@ -107,28 +107,28 @@ end)
 
 function  mod.GetScaledDreamBiomeData(dreamBiomeData, depth)
     local entry = dreamBiomeData[12]
-    local prev_entry = dreamBiomeData[11]
+    local endlessDamageRamp = 1.25
+    local endlessHealthRamp = 1.1
     local new_entry = game.DeepCopyTable(entry)
-    print(depth)
     if entry.AddOutgoingDamageModifier and entry.AddOutgoingDamageModifier.PlayerMultiplier then
-        new_entry.AddOutgoingDamageModifier.PlayerMultiplier = entry.AddOutgoingDamageModifier.PlayerMultiplier *
-            ((entry.AddOutgoingDamageModifier.PlayerMultiplier / prev_entry.AddOutgoingDamageModifier.PlayerMultiplier / 0.88) ^ (depth - 12))
+        new_entry.AddOutgoingDamageModifier.PlayerMultiplier = entry.AddOutgoingDamageModifier.PlayerMultiplier * ( endlessDamageRamp ^ (depth - 12))
         print("Damage", entry.AddOutgoingDamageModifier.PlayerMultiplier, "to", new_entry.AddOutgoingDamageModifier.PlayerMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.HealthMultiplier then
-        new_entry.DataOverrides.HealthMultiplier = entry.DataOverrides.HealthMultiplier *
-            (entry.DataOverrides.HealthMultiplier / prev_entry.DataOverrides.HealthMultiplier / 0.88) ^ (depth - 12)
-        print("HealthMultiplier", entry.DataOverrides.HealthMultiplier, "to", entry.DataOverrides.HealthMultiplier)
+        new_entry.DataOverrides.HealthMultiplier = entry.DataOverrides.HealthMultiplier * (endlessHealthRamp ^ (depth - 12))
+        print("HealthMultiplier", entry.DataOverrides.HealthMultiplier, "to", new_entry.DataOverrides.HealthMultiplier)
+    end
+    if entry.DataOverrides and entry.DataOverrides.HealingMultiplier then
+        new_entry.DataOverrides.HealingMultiplier = entry.DataOverrides.HealingMultiplier * (endlessHealthRamp ^ (depth - 12))
+        print("HealingMultiplier", entry.DataOverrides.HealingMultiplier, "to", new_entry.DataOverrides.HealingMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.OutgoingDamageModifiers then
         for index, modifier in ipairs(entry.DataOverrides.OutgoingDamageModifiers) do
             if modifier.PlayerMultiplier ~= nil then
-                new_entry.DataOverrides.OutgoingDamageModifiers[index].PlayerMultiplier = modifier.PlayerMultiplier *
-                    (modifier.PlayerMultiplier / prev_entry.DataOverrides.OutgoingDamageModifiers[index].PlayerMultiplier ) ^ (depth - 12)
+                new_entry.DataOverrides.OutgoingDamageModifiers[index].PlayerMultiplier = modifier.PlayerMultiplier * ( endlessDamageRamp ^ (depth - 12))
             end
             if modifier.NonPlayerMultiplier ~= nil then
-                new_entry.DataOverrides.OutgoingDamageModifiers[index].NonPlayerMultiplier = modifier.NonPlayerMultiplier *
-                    (modifier.NonPlayerMultiplier / prev_entry.DataOverrides.OutgoingDamageModifiers[index].NonPlayerMultiplier ) ^ (depth - 12)
+                new_entry.DataOverrides.OutgoingDamageModifiers[index].NonPlayerMultiplier = modifier.NonPlayerMultiplier * (endlessHealthRamp ^ (depth - 12))
             end
         end
     end
