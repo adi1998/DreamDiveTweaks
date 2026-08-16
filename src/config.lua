@@ -321,7 +321,7 @@ local configDesc = {
   early_unlock = {
     group = "gameplay",
     displayName = "Unlock Dream Dives early",
-    description = "Unlock Dream Dives sooner. Chronos and Typhon still need to have been fought once.",
+    description = "Unlock Dream Dives sooner. Chronos and Typhon still need to have been fought once. Warning: Dream Dives are permanently unlocked after your first dream dive.",
     restartRequired = true,
   },
 
@@ -382,6 +382,12 @@ local configDesc = {
     group = "misc",
     displayName = "Fix shop music",
     description = "Restore the missing shop music in Dream Dives.",
+  },
+
+  donk = {
+    group = "misc",
+    displayName = "Alternate Dream Dive Start Animation",
+    description = "Swaps out the hover animation with a diving animation on Dream Dive start."
   },
 
   -- Menu categories that are not config sections. Rows opt into them with `group`.
