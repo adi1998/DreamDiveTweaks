@@ -53,16 +53,25 @@ function dump(o, depth)
     end
 end
 
+NPCRando_guid = "zerp-NPCRoomRandomizer"
+ZJ_guid = "NikkelM-Zagreus_Journey"
+GameOver_guid = "zerp-GameOverScreen"
+
 local function on_ready()
     -- what to do when we are ready, but not re-do on reload.
     if config.enabled == false then return end
+
+    npcRando = rom.mods[NPCRando_guid]
+    zj = rom.mods[ZJ_guid]
+    gameOver = rom.mods[GameOver_guid]
+
     mod = modutil.mod.Mod.Register(_PLUGIN.guid)
     mod.config = config
 
-    mod.IsZagAvailable = rom.mods["NikkelM-Zagreus_Journey"] and
-                         rom.mods["NikkelM-Zagreus_Journey"].IsModEnabledAndInstallationValid and
-                         rom.mods["NikkelM-Zagreus_Journey"].IsModEnabledAndInstallationValid() and
-                         not rom.mods["NikkelM-Zagreus_Journey"].GetModConfigValueByLeafKey("z_ExcludeFromDreamDives")
+    mod.IsZagAvailable = zj and
+                         zj.IsModEnabledAndInstallationValid and
+                         zj.IsModEnabledAndInstallationValid() and
+                         not zj.GetModConfigValueByLeafKey("z_ExcludeFromDreamDives")
 
     mod.IsZag = mod.IsZagAvailable and (not config.biome_pool.disable_zag_biomes)
 
@@ -82,6 +91,11 @@ local function on_ready()
     import 'npc_scaling.lua'
     import 'dodge.lua'
     import 'scorch.lua'
+
+    import 'biomepool_ready.lua'
+
+    import 'endless/endless.lua'
+    import 'endless/runclearscreen.lua'
 end
 
 local function on_reload()
@@ -89,13 +103,14 @@ local function on_reload()
     -- only do things that are safe to run over and over.
     if config.enabled == false then return end
     import 'imgui.lua'
-    import 'biomepool.lua'
+    import 'biomepool_reload.lua'
 end
 
 local function on_ready_late()
     if config.enabled == false then return end
     import 'visage_late.lua'
     import 'donk_late.lua'
+    import 'endless/runclearscreen_late.lua'
 end
 
 local function on_reload_late()

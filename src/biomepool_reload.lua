@@ -378,82 +378,71 @@ function GenerateRoute()
         end
     end
     print("GeneratedRoute", dump(route))
-    return route
+    return route, biomeList
 end
 
-if not WrappedNextDream then
-    modutil.mod.Path.Wrap("SelectNextDreamBiome", function (base, source, args)
-        -- clamp max biome count and configured biome count if we detect ZJ doesn't have its requirements met
-        if mod.IsZag and (game.GameState.ModsNikkelMHadesBiomesClearedRunsCache or 0) < 1 then
-            if config.biome_count > 8 then
-                game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Complete a vanilla ZJ run to enable them for Dream Dives", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
-                game.wait(0.01)
-                game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Zagreus Journey biomes requirement not met", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
-            end
-            mod.MaxAllowedBiomeCount = 8
-            config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
-            game.GameData.FullRunBiomeCount = config.biome_count
-        elseif mod.IsZag then
-            mod.MaxAllowedBiomeCount = 12
+mod.SelectNextDreamBiomeWrap = function (base, source, args)
+    -- clamp max biome count and configured biome count if we detect ZJ doesn't have its requirements met
+    if mod.IsZag and (game.GameState.ModsNikkelMHadesBiomesClearedRunsCache or 0) < 1 then
+        if config.biome_count > 8 then
+            game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Complete a vanilla ZJ run to enable them for Dream Dives", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
+            game.wait(0.01)
+            game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Zagreus Journey biomes requirement not met", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
         end
+        mod.MaxAllowedBiomeCount = 8
+        config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
+        game.GameData.FullRunBiomeCount = config.biome_count
+    elseif mod.IsZag then
+        mod.MaxAllowedBiomeCount = 12
+    end
 
-        PurgeZagBiomeSets()
-        if mod.MaxAllowedBiomeCount == 12 then
-            UpdateZagBiomeSets()
-        end
+    PurgeZagBiomeSets()
+    if mod.MaxAllowedBiomeCount == 12 then
+        UpdateZagBiomeSets()
+    end
 
-        PurgeEasyBiome()
-        if config.biome_pool.larger_starting_pool then
-            UpdateEasyBiome()
-        end
+    PurgeEasyBiome()
+    if config.biome_pool.larger_starting_pool then
+        UpdateEasyBiome()
+    end
 
-        PurgeEasyBiomeZag()
-        if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
-            UpdateEasyBiomeZag()
-        end
+    PurgeEasyBiomeZag()
+    if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
+        UpdateEasyBiomeZag()
+    end
 
-        -- on getting a pre generated route from elsewhere
-        if not game.IsEmpty(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]) and (game.CurrentRun.EnteredBiomes or 0) == 0 then
-            game.CurrentRun[_PLUGIN.guid .. "StoredFullBiomeCount"] = config.biome_count
-            config.biome_count = #game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]
-            game.GameData.FullRunBiomeCount = config.biome_count
-        end
+    -- on getting a pre generated route from elsewhere
+    if not game.IsEmpty(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]) and (game.CurrentRun.EnteredBiomes or 0) == 0 then
+        game.CurrentRun[_PLUGIN.guid .. "StoredFullBiomeCount"] = config.biome_count
+        config.biome_count = #game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]
+        game.GameData.FullRunBiomeCount = config.biome_count
+    end
 
-        -- only run this if starting a new run or in the middle of a DreamDiveTweaks modded run
-        if game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"] or (game.CurrentRun.EnteredBiomes or 0) == 0 then
-            args = args or {}
-            local nextRoomSet = nil
+    -- only run this if starting a new run or in the middle of a DreamDiveTweaks modded run
+    if game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"] or (game.CurrentRun.EnteredBiomes or 0) == 0 then
+        args = args or {}
+        local nextRoomSet = nil
 
-            if game.IsEmpty( game.CurrentRun.DreamBiomePool ) then
-                game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"] = GenerateRoute()
-                nextRoomSet = game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"][1]
-                game.CurrentRun.DreamBiomePool = game.DeepCopyTable(all_biomes)
-            else
-                game.CurrentRun.EnteredBiomes = game.CurrentRun.EnteredBiomes or 0
-                nextRoomSet = game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"][game.CurrentRun.EnteredBiomes + 1]
-            end
-
-            game.RemoveValueAndCollapse(game.CurrentRun.DreamBiomePool, nextRoomSet)
-
-            game.CurrentRun.CurrentRoom.NextRoomSet = { nextRoomSet }
+        if game.IsEmpty( game.CurrentRun.DreamBiomePool ) then
+            game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"], game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"] = GenerateRoute()
+            nextRoomSet = game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"][1]
+            game.CurrentRun.DreamBiomePool = game.DeepCopyTable(all_biomes)
         else
-            base(source, args)
+            game.CurrentRun.EnteredBiomes = game.CurrentRun.EnteredBiomes or 0
+            nextRoomSet = game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"][game.CurrentRun.EnteredBiomes + 1]
         end
 
-        if game.CurrentRun.CurrentRoom.NextRoomSet[1] == nil then
-            print("nil NextRoomSet detected", dump(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]), dump(game.CurrentRun.BiomeVisitOrder), game.CurrentRun.EnteredBiomes, game.CurrentRun.DreamBiomePool)
-            game.CurrentRun.CurrentRoom.NextRoomSet = { game.RemoveRandomValue( game.CurrentRun.DreamBiomePool ) or "F" }
-        end
-    end)
+        game.RemoveValueAndCollapse(game.CurrentRun.DreamBiomePool, nextRoomSet)
 
-    table.insert(game.EncounterData.OpeningEmpty.GameStateRequirements.OrRequirements[2],
-    {
-        Path = { "CurrentRun", "EnteredBiomes" },
-        Comparison = ">",
-        Value = 0
-    })
+        game.CurrentRun.CurrentRoom.NextRoomSet = { nextRoomSet }
+    else
+        base(source, args)
+    end
 
-    WrappedNextDream = true
+    if game.CurrentRun.CurrentRoom.NextRoomSet[1] == nil then
+        print("nil NextRoomSet detected", dump(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]), dump(game.CurrentRun.BiomeVisitOrder), game.CurrentRun.EnteredBiomes, game.CurrentRun.DreamBiomePool)
+        game.CurrentRun.CurrentRoom.NextRoomSet = { game.RemoveRandomValue( game.CurrentRun.DreamBiomePool ) or "F" }
+    end
 end
 
 function CheckOrderValid()

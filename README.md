@@ -2,6 +2,10 @@
 
 Hades II mod offering multiple configurable tweaks for Dream Dives. Including but not limited to longer runs (upto a total of 12 biomes with Zagreus Journey installed), disabling visage forms, some minor fixes and more.
 
+#### NEW: Endless mode
+
+Can be started from the Victory screen of a successful Dream Dive by pressing the Pin Item (Defaults: Y or Triangle on controller and Left Click for MnK) button.
+
 ## Installation
 
 Use r2modman by ebkr from [Thunderstore](https://thunderstore.io/package/ebkr/r2modman/) or [GitHub](https://github.com/ebkr/r2modmanPlus/releases/latest).

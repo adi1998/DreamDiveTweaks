@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+## [1.8.0] - 2026-08-16
+
+- Added endless mode. Can activate it in the Victory screen of a Dream Dive to continue that run.
+
 ## [1.7.5] - 2026-08-13
 
 - Minor GameOverScreen compat (failed runs will show the remaining biomes as ?)
@@ -120,7 +124,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.5...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.0...HEAD
+[1.8.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.5...1.8.0
 [1.7.5]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.4...1.7.5
 [1.7.4]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.3...1.7.4
 [1.7.3]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.2...1.7.3

@@ -47,6 +47,16 @@ end
 
 game.GameData.FullRunBiomeCount = config.biome_count
 
+game.OnAnyLoad
+{
+    function ()
+        if not game.CurrentHubRoom and game.CurrentRun and game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"] then
+            config.biome_count = #game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]
+            game.GameData.FullRunBiomeCount = config.biome_count
+        end
+    end
+}
+
 game.ConcatTableValuesIPairs(game.RoomSets.Dream, {
     "Dream_PostBoss01",
     "Dream_PostBoss02",
@@ -194,47 +204,6 @@ end)
 
 --#region Run result subtitle
 
-local screenTextEnFile = rom.path.combine(rom.paths.Content, "Game\\Text\\en\\ScreenText.en.sjson")
-
-local biomeVisitOrderFormat = {
-    Id = "RunHistoryScreen_DreamBiomeVisitOrder",
-    DisplayName = "{!TooltipData[1]} {!TooltipData[2]} {!TooltipData[3]} {!TooltipData[4]}",
-    OverwriteLocalization = true,
-}
-
-local biomeVisitOrderOrder = {
-    "Id",
-    "DisplayName",
-    "OverwriteLocalization"
-}
-
-local clearDreamRunFormat = {
-    Id = "ClearDreamRun",
-    DisplayName = "{!TooltipData[1]} {!TooltipData[2]} {!TooltipData[3]} {!TooltipData[4]}",
-}
-
-local clearDreamRunOrder = {
-    "Id",
-    "DisplayName"
-}
-
-sjson.hook(screenTextEnFile, function (data)
-    local lastDisplayName = biomeVisitOrderFormat.DisplayName
-    for i = 5, 12 do
-        local newBiomeVisitOrder = game.DeepCopyTable(biomeVisitOrderFormat)
-        newBiomeVisitOrder.Id = newBiomeVisitOrder.Id .. i
-        lastDisplayName = lastDisplayName .. string.gsub(" {!TooltipData[Position]}", "Position", i)
-        newBiomeVisitOrder.DisplayName = "- " .. lastDisplayName .. " -"
-        table.insert(data.Texts, sjson.to_object(newBiomeVisitOrder,biomeVisitOrderOrder))
-
-        local newClearDreamRun = game.DeepCopyTable(clearDreamRunFormat)
-        newClearDreamRun.Id = newClearDreamRun.Id .. i
-        newClearDreamRun.DisplayName = lastDisplayName
-        table.insert(data.Texts, sjson.to_object(newClearDreamRun, clearDreamRunOrder))
-    end
-    return data
-end)
-
 modutil.mod.Path.Wrap("GetVisitedBiomeIcons", function (base, run)
     local tooltipData = {}
     local route = run[_PLUGIN.guid .. "GeneratedRoute"] or {}
@@ -247,7 +216,11 @@ end)
 
 modutil.mod.Path.Wrap("RunClearMessagePresentation", function (base, screen, message, tooltipData)
     if message == "ClearDreamRun" and type(tooltipData) == "table" and #tooltipData > 4 then
-        message = message .. #tooltipData
+        local iconTemplate = "{!TooltipData[{{index}}]}"
+        message = string.gsub(iconTemplate, "{{index}}", 1)
+        for i = 2, #tooltipData do
+            message = message .. " " .. string.gsub(iconTemplate, "{{index}}", i)
+        end
     end
     return base(screen, message, tooltipData)
 end)
@@ -469,11 +442,12 @@ table.insert(game.RewardStoreData.RunProgress, {
 
 modutil.mod.Path.Wrap("StartRoom", function (base, currentRun, currentRoom)
     base(currentRun, currentRoom)
-    if currentRun.IsDreamRun and currentRun.EnteredBiomes == 5 and currentRoom.BiomeStartRoom then
-        game.CurrentRun.MaxGodsPerRun = 5
-    end
-    if currentRun.IsDreamRun and currentRun.EnteredBiomes == 9 and currentRoom.BiomeStartRoom then
-        game.CurrentRun.MaxGodsPerRun = 6
+    if currentRun.IsDreamRun and (currentRun.EnteredBiomes - 1) % 4 == 0 and currentRoom.BiomeStartRoom then
+        game.CurrentRun.MaxGodsPerRun = 4 + (currentRun.EnteredBiomes - 1) / 4
+        if currentRun.EnteredBiomes > 12 then
+            game.CurrentRun.LootTypeHistory.WeaponUpgrade = math.min(game.CurrentRun.LootTypeHistory.WeaponUpgrade or 0, 3)
+            game.CurrentRun.LootTypeHistory.HermesUpgrade = math.min(game.CurrentRun.LootTypeHistory.HermesUpgrade or 0, 2)
+        end
     end
 end)
 
@@ -563,7 +537,7 @@ else
     }
 end
 
---endregion
+--#endregion
 
 modutil.mod.Path.Wrap("ZagreusDeathDefiancePresentation", function (base, boss, currentRun, aiStage)
     boss.MaxHealth = aiStage.NewMaxHealth or boss.MaxHealth

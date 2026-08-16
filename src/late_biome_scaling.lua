@@ -38,6 +38,9 @@ local function ScaleEntry(entry, power, damageRamp, healthRamp)
     if entry.DataOverrides and entry.DataOverrides.HealthMultiplier then
         entry.DataOverrides.HealthMultiplier = entry.DataOverrides.HealthMultiplier * (healthRamp ^ power)
     end
+    if entry.DataOverrides and entry.DataOverrides.HealingMultiplier then
+        entry.DataOverrides.HealingMultiplier = entry.DataOverrides.HealingMultiplier * (healthRamp ^ power)
+    end
     if entry.DataOverrides and entry.DataOverrides.OutgoingDamageModifiers then
         for _, modifier in ipairs(entry.DataOverrides.OutgoingDamageModifiers) do
             if modifier.PlayerMultiplier ~= nil then
