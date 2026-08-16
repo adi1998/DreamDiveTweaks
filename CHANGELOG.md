@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Added endless mode. Can activate it in the Victory screen of a Dream Dive to continue that run.
+
 ## [1.7.5] - 2026-08-13
 
 - Minor GameOverScreen compat (failed runs will show the remaining biomes as ?)
