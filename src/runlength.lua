@@ -436,6 +436,7 @@ modutil.mod.Path.Wrap("StartRoom", function (base, currentRun, currentRoom)
         game.CurrentRun.MaxGodsPerRun = 4 + (currentRun.EnteredBiomes - 1) / 4
         if currentRun.EnteredBiomes > 12 then
             game.CurrentRun.LootTypeHistory.WeaponUpgrade = math.min(game.CurrentRun.LootTypeHistory.WeaponUpgrade, 3)
+            game.CurrentRun.LootTypeHistory.HermesUpgrade = math.min(game.CurrentRun.LootTypeHistory.HermesUpgrade or 999, 2)
         end
     end
 end)
