@@ -59,6 +59,8 @@ function mod.CleanupBiomeVisits()
     game.CurrentRun.ClosedDoors = {}
     game.CurrentRun.RoomCreations = {}
     game.CurrentRun.RoomCountCache = {}
+    game.CurrentRun.BiomeRoomCountCache = {}
+    game.CurrentRun.EncountersOccurredBiomeCache = {}
 
     game.CurrentRun.FieldsMaxDoorsRolled = 0
 
@@ -107,13 +109,16 @@ function  mod.GetScaledDreamBiomeData(dreamBiomeData, depth)
     local entry = dreamBiomeData[12]
     local prev_entry = dreamBiomeData[11]
     local new_entry = game.DeepCopyTable(entry)
+    print(depth)
     if entry.AddOutgoingDamageModifier and entry.AddOutgoingDamageModifier.PlayerMultiplier then
         new_entry.AddOutgoingDamageModifier.PlayerMultiplier = entry.AddOutgoingDamageModifier.PlayerMultiplier *
-            ((entry.AddOutgoingDamageModifier.PlayerMultiplier / prev_entry.AddOutgoingDamageModifier.PlayerMultiplier) ^ (depth - 12))
+            ((entry.AddOutgoingDamageModifier.PlayerMultiplier / prev_entry.AddOutgoingDamageModifier.PlayerMultiplier / 0.88) ^ (depth - 12))
+        print("Damage", entry.AddOutgoingDamageModifier.PlayerMultiplier, "to", new_entry.AddOutgoingDamageModifier.PlayerMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.HealthMultiplier then
         new_entry.DataOverrides.HealthMultiplier = entry.DataOverrides.HealthMultiplier *
-            (entry.DataOverrides.HealthMultiplier / prev_entry.DataOverrides.HealthMultiplier) ^ (depth - 12)
+            (entry.DataOverrides.HealthMultiplier / prev_entry.DataOverrides.HealthMultiplier / 0.88) ^ (depth - 12)
+        print("HealthMultiplier", entry.DataOverrides.HealthMultiplier, "to", entry.DataOverrides.HealthMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.OutgoingDamageModifiers then
         for index, modifier in ipairs(entry.DataOverrides.OutgoingDamageModifiers) do
@@ -143,8 +148,23 @@ modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
         scalingCache[unit.Name].DreamBiomeData[currentRun.EnteredBiomes + 1] = scalingCache[unit.Name].DreamBiomeData[currentRun.EnteredBiomes + 1] or mod.GetScaledDreamBiomeData(unit.DreamBiomeData, currentRun.EnteredBiomes + 1)
         unit.DreamBiomeData[currentRun.EnteredBiomes] = scalingCache[unit.Name].DreamBiomeData[currentRun.EnteredBiomes]
         unit.DreamBiomeData[currentRun.EnteredBiomes + 1] = scalingCache[unit.Name].DreamBiomeData[currentRun.EnteredBiomes + 1]
+        if VorBossSetupEventIndex[unit.Name] then
+            local setupEvents = unit.SetupEvents or {}
+            for _, event in ipairs(setupEvents) do
+                if event.FunctionName == "OverwriteSelf" and event.Args and event.Args.DreamBiomeData then
+                    event.Args.DreamBiomeData[currentRun.EnteredBiomes] = unit.DreamBiomeData[currentRun.EnteredBiomes]
+                end
+            end
+        end
     end
     return base(unit, currentRun, args)
+end)
+
+modutil.mod.Path.Wrap("SetupEncounter", function (base, encounterData, room)
+    if encounterData and encounterData.DreamBiomeData and encounterData.DreamBiomeData[12] and game.CurrentRun and game.CurrentRun.IsDreamRun and (game.CurrentRun.EnteredBiomes or 1) > 12 then
+        encounterData.DreamBiomeData[game.CurrentRun.EnteredBiomes or 1] = encounterData.DreamBiomeData[game.CurrentRun.EnteredBiomes or 1] or encounterData.DreamBiomeData[12]
+    end
+    return base(encounterData, room)
 end)
 
 local totalDodge = 0

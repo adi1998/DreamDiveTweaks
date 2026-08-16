@@ -103,13 +103,14 @@ NPCRando_guid = "zerp-NPCRoomRandomizer"
 ZJ_guid = "NikkelM-Zagreus_Journey"
 GameOver_guid = "zerp-GameOverScreen"
 
-npcRando = rom.mods[npcRando]
-zj = rom.mods[ZJ_guid]
-gameOver = rom.mods[GameOver_guid]
-
 local function on_ready()
     -- what to do when we are ready, but not re-do on reload.
     if config.enabled == false then return end
+
+    npcRando = rom.mods[NPCRando_guid]
+    zj = rom.mods[ZJ_guid]
+    gameOver = rom.mods[GameOver_guid]
+
     mod = modutil.mod.Mod.Register(_PLUGIN.guid)
     mod.config = config
 
