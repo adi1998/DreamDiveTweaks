@@ -4,7 +4,7 @@ Hades II mod offering multiple configurable tweaks for Dream Dives. Including bu
 
 #### NEW: Endless mode
 
-Can be started from the Victory screen of a successful Dream Dive by pressing the Pin Item (Defaults: Y or Triangle on controller and Left Click for MnK) button.
+Can be started from the Victory screen of a successful Dream Dive by pressing the Pin Item (Defaults: Y or Triangle on controller and Right Click for MnK) button.
 
 ## Installation
 
