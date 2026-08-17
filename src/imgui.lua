@@ -30,10 +30,10 @@ function DrawMenu()
         if game.CurrentHubRoom then
             rom.ImGui.Text(string.gsub("Set a longer/shorter number of Regions (2-MaxBiomeCount)", "MaxBiomeCount", mod.MaxAllowedBiomeCount))
             value, selected = rom.ImGui.SliderInt("Regions", config.biome_count, 2, mod.MaxAllowedBiomeCount, '%d%')
-            if selected and value ~= previousConfig.biome_count then
+            if selected then
                 config.biome_count = value
-                previousConfig.biome_count = value
                 game.GameData.FullRunBiomeCount = config.biome_count
+                ForcedPreset = "Custom"
             end
 
             if mod.IsZagAvailable then

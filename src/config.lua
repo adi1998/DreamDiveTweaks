@@ -78,7 +78,9 @@ local configDesc = {
       onChanged = function(key, new_value)
         mod.IsZag = not new_value
         mod.MaxAllowedBiomeCount = (mod.IsZag and 12) or 8
-        config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
+        if mod and mod.config then
+          mod.config.biome_count = math.min(mod.config.biome_count, mod.MaxAllowedBiomeCount)
+        end
         mod.RefreshBiomeSets()
       end,
     },
@@ -94,28 +96,28 @@ local configDesc = {
       group = "biomePool",
       displayName = "Easy first Region",
       description = "Always start the run in an easier Region, such as Oceanus, the Mourning Fields, or Thessaly.",
-      disabled = function() return config.biome_pool.custom_order == true end,
+      disabled = function() return mod and mod.config.biome_pool.custom_order == true end,
       disabledDescription = "Not used while a custom Region order is set.",
     },
     hard_last_biome = {
       group = "biomePool",
       displayName = "Hard final Region",
       description = "Always end the run in a harder Region, such as Tartarus, Olympus, or the Summit.",
-      disabled = function() return config.biome_pool.custom_order == true end,
+      disabled = function() return mod and mod.config.biome_pool.custom_order == true end,
       disabledDescription = "Not used while a custom Region order is set.",
     },
     larger_starting_pool = {
       group = "biomePool",
       displayName = "Larger starting pool",
       description = "Allow more Regions to be picked as the run's first.",
-      disabled = function() return config.biome_pool.custom_order == true end,
+      disabled = function() return mod and mod.config.biome_pool.custom_order == true end,
       disabledDescription = "Not used while a custom Region order is set.",
     },
     deterministic_biome_order = {
       group = "biomePool",
       displayName = "Deterministic order",
       description = "Always generate the same Region order for the same seed (after undoing the night).",
-      disabled = function() return config.biome_pool.custom_order == true end,
+      disabled = function() return mod and mod.config.biome_pool.custom_order == true end,
       disabledDescription = "Not used while a custom Region order is set.",
     },
 
@@ -139,7 +141,7 @@ local configDesc = {
         description = "Apply a predefined Region order. This also sets the number of Regions to match the preset. Presets needing more Regions than are currently available are not listed.",
         -- get() is nil until the mod has loaded, so the widget kind cannot be inferred from it.
         type = "enum",
-        get = function() return mod and mod.GetCurrentPresetName() end,
+        get = function() return mod and (ForcedPreset or mod.GetCurrentPresetName()) end,
         set = function(value) return mod and mod.ApplyBiomeOrderPreset(value) end,
         values = function() return mod and mod.GetPresetNames() end,
       },
@@ -180,7 +182,7 @@ local configDesc = {
         description = "The Region entered in slot 3 of the run.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 3 end,
+        disabled = function() return mod and mod.config.biome_count < 3 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["4"] = {
@@ -190,7 +192,7 @@ local configDesc = {
         description = "The Region entered in slot 4 of the run.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 4 end,
+        disabled = function() return mod and mod.config.biome_count < 4 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["5"] = {
@@ -200,7 +202,7 @@ local configDesc = {
         description = "The Region entered in slot 5 of the run.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 5 end,
+        disabled = function() return mod and mod.config.biome_count < 5 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["6"] = {
@@ -210,7 +212,7 @@ local configDesc = {
         description = "The Region entered in slot 6 of the run.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 6 end,
+        disabled = function() return mod and mod.config.biome_count < 6 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["7"] = {
@@ -220,7 +222,7 @@ local configDesc = {
         description = "The Region entered in slot 7 of the run.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 7 end,
+        disabled = function() return mod and mod.config.biome_count < 7 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["8"] = {
@@ -230,7 +232,7 @@ local configDesc = {
         description = "The Region entered in slot 8 of the run.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 8 end,
+        disabled = function() return mod and mod.config.biome_count < 8 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["9"] = {
@@ -240,7 +242,7 @@ local configDesc = {
         description = "The Region entered in slot 9 of the run. Needs the Zagreus' Journey Regions to be in the pool.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 9 end,
+        disabled = function() return mod and mod.config.biome_count < 9 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["10"] = {
@@ -250,7 +252,7 @@ local configDesc = {
         description = "The Region entered in slot 10 of the run. Needs the Zagreus' Journey Regions to be in the pool.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 10 end,
+        disabled = function() return mod and mod.config.biome_count < 10 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["11"] = {
@@ -260,7 +262,7 @@ local configDesc = {
         description = "The Region entered in slot 11 of the run. Needs the Zagreus' Journey Regions to be in the pool.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 11 end,
+        disabled = function() return mod and mod.config.biome_count < 11 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
       ["12"] = {
@@ -270,7 +272,7 @@ local configDesc = {
         description = "The Region entered in slot 12 of the run. Needs the Zagreus' Journey Regions to be in the pool.",
         values = function() return mod and mod.GetBiomeOptions() end,
         labels = function() return mod and mod.GetBiomeLabels() end,
-        disabled = function() return config.biome_count < 12 end,
+        disabled = function() return mod and mod.config.biome_count < 12 end,
         disabledDescription = "The run is set to fewer Regions than this.",
       },
     },
@@ -291,7 +293,7 @@ local configDesc = {
     max = 100,
     step = 5,
     showAsPercentage = true,
-    disabled = function() return not config.meta_reward_fix end,
+    disabled = function() return not mod and mod.config.meta_reward_fix end,
     disabledDescription = "Turn on Fix meta reward count first.",
   },
   hermes_shrine_chance = {
@@ -402,7 +404,7 @@ local configDesc = {
           description = "Pick the Region for each slot.",
           -- Greys the whole page and blocks opening it, so the rows inside never repeat this.
           disabled = function()
-            return not (config.biome_pool.custom_order == true)
+            return not (mod and mod.config.biome_pool.custom_order == true)
           end,
           disabledDescription = "Turn on Use custom Region order first.",
         },

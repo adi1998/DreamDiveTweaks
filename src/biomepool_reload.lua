@@ -238,6 +238,7 @@ end
 function CopyCustomOrder(order)
     for key, value in pairs(order) do
         if config.biome_pool.custom_order_data[key] then
+            print("writing custom", key, value)
             config.biome_pool.custom_order_data[key] = value
         end
     end
@@ -267,9 +268,8 @@ function mod.GetPresetNames()
         end
     end
     table.sort(names)
-    if mod.GetCurrentPresetName() == "Custom" then
-        table.insert(names, "Custom")
-    end
+    table.insert(names, "Custom")
+    print("preset name", dump(names))
     return names
 end
 
@@ -284,7 +284,7 @@ function mod.GetCurrentPresetName()
                 end
             end
             if matches then
-                return name
+                return ForcedPreset or name
             end
         end
     end
@@ -292,14 +292,19 @@ function mod.GetCurrentPresetName()
 end
 
 function mod.ApplyBiomeOrderPreset(name)
-    local data = preset_orders[name]
-    if not data then
-        return
+    if preset_orders[name] then
+        local data = preset_orders[name]
+        if not data then
+            return
+        end
+        print(name)
+        config.biome_count = data.count
+        game.GameData.FullRunBiomeCount = config.biome_count
+        CopyCustomOrder(data.order)
+        ForcedPreset = nil
+    else
+        ForcedPreset = "Custom"
     end
-    CurrentPresetName = name
-    config.biome_count = data.count
-    game.GameData.FullRunBiomeCount = config.biome_count
-    CopyCustomOrder(data.order)
 end
 
 function GetCustomOrder()
@@ -447,7 +452,11 @@ end
 
 function CheckOrderValid()
     local set = {}
+    print("CheckOrderValid")
+    print(dump(all_biomes))
     for i = 1, config.biome_count do
+        print(i, config.biome_pool.custom_order_data[i..""])
+        print(dump(set))
         if (set[config.biome_pool.custom_order_data[i..""]] or not game.Contains(all_biomes, config.biome_pool.custom_order_data[i..""])) and config.biome_pool.custom_order_data[i..""] ~= "Random" then
             return false
         end
@@ -457,8 +466,6 @@ function CheckOrderValid()
     end
     return true
 end
-
-CurrentPresetName = CurrentPresetName or "Underworld - Surface"
 
 CheckOrder = true
 IsOrderValid = true
@@ -479,6 +486,7 @@ function DrawCustomOrderOptions()
             CopyCustomOrder(default_order)
             config.biome_count = mod.MaxAllowedBiomeCount
             game.GameData.FullRunBiomeCount = config.biome_count
+            ForcedPreset = nil
             IsOrderValid = true
         end
 
@@ -532,17 +540,21 @@ function DrawCustomOrderOptions()
         end
 
         rom.ImGui.Text("Select order preset")
-        if rom.ImGui.BeginCombo("###biomeorderpreset", CurrentPresetName) then
-            for presetName, presetData in pairs(preset_orders) do
-                if presetData.count <= mod.MaxAllowedBiomeCount and (not presetData.zag or mod.MaxAllowedBiomeCount == 12) then
-                    if rom.ImGui.Selectable(presetName, (CurrentPresetName == presetName)) then
-                        CurrentPresetName = presetName
+        local currentPresentName = mod.GetCurrentPresetName()
+        if rom.ImGui.BeginCombo("###biomeorderpreset", currentPresentName) then
+            for _, presetName in pairs(mod.GetPresetNames()) do
+                local presetData = preset_orders[presetName]
+                if rom.ImGui.Selectable(presetName, (currentPresentName == presetName)) then
+                    if presetName ~= "Custom" then
                         config.biome_count = presetData.count
                         game.GameData.FullRunBiomeCount = config.biome_count
                         CopyCustomOrder(presetData.order)
-                        rom.ImGui.SetItemDefaultFocus()
                         CheckOrder = true
+                        ForcedPreset = nil
+                    else
+                        ForcedPreset = "Custom"
                     end
+                    rom.ImGui.SetItemDefaultFocus()
                 end
             end
             rom.ImGui.EndCombo()
