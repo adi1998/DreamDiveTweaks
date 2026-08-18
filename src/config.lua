@@ -323,8 +323,8 @@ local configDesc = {
   early_unlock = {
     group = "gameplay",
     displayName = "Unlock Dream Dives early",
-    description = "Unlock Dream Dives sooner. Chronos and Typhon still need to have been fought once. Warning: Dream Dives are permanently unlocked after your first dream dive.",
-    restartRequired = true,
+    description = "Unlock Dream Dives sooner. Chronos and Typhon still need to have been fought once. \n Warning: Dream Dives are permanently unlocked after your first dream dive.",
+    editableContext = "mainMenu",
   },
 
   late_biome_start = {
