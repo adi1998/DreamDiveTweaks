@@ -293,7 +293,7 @@ local configDesc = {
     max = 100,
     step = 5,
     showAsPercentage = true,
-    disabled = function() return not mod and mod.config.meta_reward_fix end,
+    disabled = function() return not (mod and mod.config.meta_reward_fix) end,
     disabledDescription = "Turn on Fix meta reward count first.",
   },
   hermes_shrine_chance = {
