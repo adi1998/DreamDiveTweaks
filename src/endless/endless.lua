@@ -98,6 +98,8 @@ function mod.CleanupBiomeVisits()
     end
 end
 
+local scalingCache = {}
+
 modutil.mod.Path.Wrap("SelectNextDreamBiome", function(base, source, args)
     if game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
         if game.IsEmpty(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"]) then
@@ -111,6 +113,7 @@ modutil.mod.Path.Wrap("SelectNextDreamBiome", function(base, source, args)
         end
         local nextRoomSet = table.remove(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"])
         game.CurrentRun.CurrentRoom.NextRoomSet = { nextRoomSet }
+        scalingCache = {}
         return
     end
     return base(source, args)
@@ -118,8 +121,8 @@ end)
 
 function  mod.GetScaledDreamBiomeData(dreamBiomeData, depth)
     local entry = dreamBiomeData[12]
-    local endlessDamageRamp = 1.25
-    local endlessHealthRamp = 1.1
+    local endlessDamageRamp = 1.06
+    local endlessHealthRamp = 1.06
     local new_entry = game.DeepCopyTable(entry)
     if entry.AddOutgoingDamageModifier and entry.AddOutgoingDamageModifier.PlayerMultiplier then
         new_entry.AddOutgoingDamageModifier.PlayerMultiplier = entry.AddOutgoingDamageModifier.PlayerMultiplier * ( endlessDamageRamp ^ (depth - 12))
@@ -145,8 +148,6 @@ function  mod.GetScaledDreamBiomeData(dreamBiomeData, depth)
     end
     return new_entry
 end
-
-local scalingCache = {}
 
 modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
     currentRun = currentRun or game.CurrentRun

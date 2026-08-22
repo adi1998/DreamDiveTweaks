@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-- Update README
+- Reduce endless scaling after 12 biomes.
 
 ## [1.8.1] - 2026-08-16
 
