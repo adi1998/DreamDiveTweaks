@@ -28,58 +28,12 @@ sjson = mods['SGG_Modding-SJSON']
 ---@module 'SGG_Modding-ModUtil'
 modutil = mods['SGG_Modding-ModUtil']
 
----@module 'SGG_Modding-Chalk'
-chalk = mods["SGG_Modding-Chalk"]
 ---@module 'SGG_Modding-ReLoad'
 reload = mods['SGG_Modding-ReLoad']
 
 ---@module 'config'
-configChalk = chalk.auto 'config.lua'
--- ^ this updates our `.cfg` file in the config folder!
--- public.config = config -- so other mods can access our config
-
-local function DeepCopyTable( orig )
-	local orig_type = type(orig)
-	local copy
-	if orig_type == 'table' then
-		copy = {}
-		-- slightly more efficient to call next directly instead of using pairs
-		for k,v in next, orig, nil do
-			copy[k] = DeepCopyTable(v)
-		end
-	else
-		copy = orig
-	end
-
-	return copy
-end
-
-local function DeepConfigMetatable( orig, origCopy )
-	local orig_type = type(orig)
-	local proxy
-	if orig_type == 'table' then
-		proxy = {}
-        local mt = {
-            __newindex = function (t,k,v)
-                orig[k] = v
-                origCopy[k] = v
-            end,
-
-            __index = function (t,k)
-                return origCopy[k]
-            end
-        }
-        setmetatable(proxy, mt)
-		for k,v in pairs(orig) do
-			rawset(proxy, k, DeepConfigMetatable(v, origCopy[k]))
-		end
-	end
-	return proxy
-end
-
-configCopy = DeepCopyTable(configChalk)
-
-config = DeepConfigMetatable(configChalk, configCopy)
+config = rom.mod_settings.load 'config.lua'
+-- ^ this updates our `.cfg` file in the config folder, and registers our settings under the in-game mod menu
 
 public.config = config
 

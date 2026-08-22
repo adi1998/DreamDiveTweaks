@@ -208,20 +208,24 @@ function PurgeEasyBiomeZag()
     game.RemoveValueAndCollapse(starting_biomes, "Tartarus")
 end
 
-PurgeZagBiomeSets()
-if mod.MaxAllowedBiomeCount == 12 then
-    UpdateZagBiomeSets()
+function mod.RefreshBiomeSets()
+    PurgeZagBiomeSets()
+    if mod.MaxAllowedBiomeCount == 12 then
+        UpdateZagBiomeSets()
+    end
+
+    PurgeEasyBiome()
+    if config.biome_pool.larger_starting_pool then
+        UpdateEasyBiome()
+    end
+
+    PurgeEasyBiomeZag()
+    if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
+        UpdateEasyBiomeZag()
+    end
 end
 
-PurgeEasyBiome()
-if config.biome_pool.larger_starting_pool then
-    UpdateEasyBiome()
-end
-
-PurgeEasyBiomeZag()
-if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
-    UpdateEasyBiomeZag()
-end
+mod.RefreshBiomeSets()
 
 function mod.GetRandomTableValue(tableArg)
     if config.biome_pool.deterministic_biome_order then
@@ -237,6 +241,65 @@ function CopyCustomOrder(order)
             config.biome_pool.custom_order_data[key] = value
         end
     end
+end
+
+function mod.GetBiomeOptions()
+    local values = {"Random"}
+    for _, biome in ipairs(all_biomes) do
+        table.insert(values, biome)
+    end
+    return values
+end
+
+function mod.GetBiomeLabels()
+    local labels = {"Random"}
+    for _, biome in ipairs(all_biomes) do
+        table.insert(labels, biomeDisplayNameMap[biome] or biome)
+    end
+    return labels
+end
+
+function mod.GetPresetNames()
+    local names = {}
+    for name, data in pairs(preset_orders) do
+        if data.count <= mod.MaxAllowedBiomeCount and (not data.zag or mod.MaxAllowedBiomeCount == 12) then
+            table.insert(names, name)
+        end
+    end
+    table.sort(names)
+    if mod.GetCurrentPresetName() == "Custom" then
+        table.insert(names, "Custom")
+    end
+    return names
+end
+
+function mod.GetCurrentPresetName()
+    for name, data in pairs(preset_orders) do
+        if data.count == config.biome_count then
+            local matches = true
+            for i = 1, config.biome_count do
+                if config.biome_pool.custom_order_data[i..""] ~= data.order[i..""] then
+                    matches = false
+                    break
+                end
+            end
+            if matches then
+                return name
+            end
+        end
+    end
+    return "Custom"
+end
+
+function mod.ApplyBiomeOrderPreset(name)
+    local data = preset_orders[name]
+    if not data then
+        return
+    end
+    CurrentPresetName = name
+    config.biome_count = data.count
+    game.GameData.FullRunBiomeCount = config.biome_count
+    CopyCustomOrder(data.order)
 end
 
 function GetCustomOrder()
