@@ -140,6 +140,9 @@ local function on_ready()
 
     import 'biomepool_ready.lua'
 
+    import 'biomelogic.lua'
+    import 'biomedata.lua'
+
     import 'endless/endless.lua'
     import 'endless/runclearscreen.lua'
 end
@@ -150,6 +153,7 @@ local function on_reload()
     if config.enabled == false then return end
     import 'imgui.lua'
     import 'biomepool_reload.lua'
+    import 'biomelogic.lua'
 end
 
 local function on_ready_late()
