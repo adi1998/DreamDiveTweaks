@@ -93,7 +93,7 @@ function RetryGenerateRoute()
             route, msg = GenerateRouteNew()
             if route then
                 if retry > 1 then
-                    msg = "Warning: Biome bans maybe too restrictive. Required " .. retry .. " retries to find route."
+                    msg = "Warning: Biome bans may be too restrictive. Required " .. retry .. " retries to find route."
                 end
                 if rep > repeat_start then
                     msg = "Warning: Biome bans too restrictive, increasing duplicate biome limit to " .. config.max_repeats_allowed
