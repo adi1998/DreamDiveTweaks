@@ -23,6 +23,11 @@ end)
 
 local scaling_applied = nil
 
+local curve_display_name = {
+    exp = "Exponential",
+    linear = "Linear"
+}
+
 function DrawMenu()
 
     local value, selected, checked
@@ -223,6 +228,29 @@ function DrawMenu()
         value, checked = rom.ImGui.Checkbox("Add purging wells to post boss rooms", config.purging_well)
         if checked then
             config.purging_well = value
+        end
+    end
+
+    if rom.ImGui.CollapsingHeader("Endless") then
+        rom.ImGui.Text("Configure scaling parameters beyond 12 biomes.")
+        if rom.ImGui.BeginCombo("Scaling curve", curve_display_name[config.endless.gain_type]) then
+            for _, gain_type in ipairs({"exp", "linear"}) do
+                if rom.ImGui.Selectable(curve_display_name[gain_type], gain_type == config.endless.gain_type) then
+                    config.endless.gain_type = gain_type
+                    rom.ImGui.SetItemDefaultFocus()
+                end
+            end
+            rom.ImGui.EndCombo()
+        end
+
+        value, selected = rom.ImGui.SliderFloat("Enemy health gain", config.endless.health_gain * 100, 5, 25, "+%.1f%%", rom.ImGuiSliderFlags.Logarithmic)
+        if selected then
+            config.endless.health_gain = value / 100
+        end
+
+        value, selected = rom.ImGui.SliderFloat("Enemy damage gain", config.endless.damage_gain * 100, 5, 25, "+%.1f%%", rom.ImGuiSliderFlags.Logarithmic)
+        if selected then
+            config.endless.damage_gain = value / 100
         end
     end
 

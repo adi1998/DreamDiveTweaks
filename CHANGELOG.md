@@ -2,7 +2,9 @@
 
 ## [Unreleased]
 
-- Reduce endless scaling after 12 biomes.
+- Allow configuring how endless scales enemy health and damage after 12 regions.
+- Fix some voice lines not playing at the appropriate run depth.
+- Cleanup more stuff on triggering endless mode.
 
 ## [1.8.1] - 2026-08-16
 

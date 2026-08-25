@@ -61,6 +61,7 @@ function mod.CleanupBiomeVisits()
     game.CurrentRun.RoomCountCache = {}
     game.CurrentRun.BiomeRoomCountCache = {}
     game.CurrentRun.EncountersOccurredBiomeCache = {}
+    game.CurrentRun.EncountersDepthCache = {}
 
     game.CurrentRun.FieldsMaxDoorsRolled = 0
 
@@ -119,30 +120,35 @@ modutil.mod.Path.Wrap("SelectNextDreamBiome", function(base, source, args)
     return base(source, args)
 end)
 
+local function scaleItem(orig, ramp, exp)
+    if config.endless.gain_type == "exp" then
+        return orig * (1 + ramp) ^ exp
+    end
+    return orig * (1 + ramp * exp)
+end
+
 function  mod.GetScaledDreamBiomeData(dreamBiomeData, depth)
     local entry = dreamBiomeData[12]
-    local endlessDamageRamp = 1.06
-    local endlessHealthRamp = 1.06
     local new_entry = game.DeepCopyTable(entry)
     if entry.AddOutgoingDamageModifier and entry.AddOutgoingDamageModifier.PlayerMultiplier then
-        new_entry.AddOutgoingDamageModifier.PlayerMultiplier = entry.AddOutgoingDamageModifier.PlayerMultiplier * ( endlessDamageRamp ^ (depth - 12))
+        new_entry.AddOutgoingDamageModifier.PlayerMultiplier = scaleItem(entry.AddOutgoingDamageModifier.PlayerMultiplier, config.endless.damage_gain, depth - 12)
         print("Damage", entry.AddOutgoingDamageModifier.PlayerMultiplier, "to", new_entry.AddOutgoingDamageModifier.PlayerMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.HealthMultiplier then
-        new_entry.DataOverrides.HealthMultiplier = entry.DataOverrides.HealthMultiplier * (endlessHealthRamp ^ (depth - 12))
+        new_entry.DataOverrides.HealthMultiplier = scaleItem(entry.DataOverrides.HealthMultiplier, config.endless.health_gain, depth - 12)
         print("HealthMultiplier", entry.DataOverrides.HealthMultiplier, "to", new_entry.DataOverrides.HealthMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.HealingMultiplier then
-        new_entry.DataOverrides.HealingMultiplier = entry.DataOverrides.HealingMultiplier * (endlessHealthRamp ^ (depth - 12))
+        new_entry.DataOverrides.HealingMultiplier = scaleItem(entry.DataOverrides.HealingMultiplier, config.endless.health_gain, depth - 12)
         print("HealingMultiplier", entry.DataOverrides.HealingMultiplier, "to", new_entry.DataOverrides.HealingMultiplier)
     end
     if entry.DataOverrides and entry.DataOverrides.OutgoingDamageModifiers then
         for index, modifier in ipairs(entry.DataOverrides.OutgoingDamageModifiers) do
             if modifier.PlayerMultiplier ~= nil then
-                new_entry.DataOverrides.OutgoingDamageModifiers[index].PlayerMultiplier = modifier.PlayerMultiplier * ( endlessDamageRamp ^ (depth - 12))
+                new_entry.DataOverrides.OutgoingDamageModifiers[index].PlayerMultiplier = scaleItem(modifier.PlayerMultiplier, config.endless.damage_gain, depth - 12)
             end
             if modifier.NonPlayerMultiplier ~= nil then
-                new_entry.DataOverrides.OutgoingDamageModifiers[index].NonPlayerMultiplier = modifier.NonPlayerMultiplier * (endlessHealthRamp ^ (depth - 12))
+                new_entry.DataOverrides.OutgoingDamageModifiers[index].NonPlayerMultiplier = scaleItem(modifier.NonPlayerMultiplier, config.endless.health_gain, depth - 12)
             end
         end
     end
