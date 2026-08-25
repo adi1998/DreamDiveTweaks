@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.9.0] - 2026-08-25
+
 - Allow configuring how endless scales enemy health and damage after 12 regions.
 - Fix some voice lines not playing at the appropriate run depth.
 - Cleanup more stuff on triggering endless mode.
@@ -132,7 +134,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.1...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.9.0...HEAD
+[1.9.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.1...1.9.0
 [1.8.1]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.5...1.8.0
 [1.7.5]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.4...1.7.5

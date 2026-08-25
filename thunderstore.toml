@@ -4,7 +4,7 @@ schemaVersion = "0.0.1"
 [package]
 namespace = "zerp"
 name = "DreamDiveTweaks"
-versionNumber = "1.8.1"
+versionNumber = "1.9.0"
 description = "Hades II mod offering multiple configurable tweaks for Dream Dives. Including but not limited to disabling visage forms, longer runs, some minor fixes and more. Compatible with Zagreus' Journey"
 websiteUrl = "https://github.com/adi1998/DreamDiveTweaks"
 containsNsfwContent = false
