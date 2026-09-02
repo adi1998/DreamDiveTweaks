@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.10.0] - 2026-09-02
+
 - Allow configuring how frequently new gods/hammers are added to the loot pool.
 - Fix Worry Free staying visisble after triggering endless mode.
 
@@ -137,7 +139,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.9.0...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.10.0...HEAD
+[1.10.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.1...1.9.0
 [1.8.1]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.0...1.8.1
 [1.8.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.7.5...1.8.0
