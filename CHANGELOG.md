@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Allow configuring how frequently new gods/hammers are added to the loot pool.
+- Fix Worry Free staying visisble after triggering endless mode.
+
 ## [1.9.0] - 2026-08-25
 
 - Allow configuring how endless scales enemy health and damage after 12 regions.

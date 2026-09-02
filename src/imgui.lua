@@ -168,6 +168,20 @@ function DrawMenu()
             rom.ImGui.SameLine()
             rom.ImGui.Text("Scaling updated")
         end
+
+        rom.ImGui.Separator()
+        rom.ImGui.Text("Number of regions before the max god limit is increased.\nFirst limit increase always happens after 4 regions.")
+        value, selected = rom.ImGui.SliderInt("###maxgods", config.max_gods_increase_interval, 1, 6, "%d")
+        if selected then
+            config.max_gods_increase_interval = value
+        end
+
+        rom.ImGui.Separator()
+        rom.ImGui.Text("Number of regions before Hermes/hammer limit is increased.\nFirst limit increase always happens after 4 regions.")
+        value, selected = rom.ImGui.SliderInt("###maxhamherm", config.hammer_hermes_interval, 1, 6, "%d")
+        if selected then
+            config.hammer_hermes_interval = value
+        end
     end
 
     rom.ImGui.Separator()
@@ -230,6 +244,8 @@ function DrawMenu()
             config.purging_well = value
         end
     end
+
+    rom.ImGui.Separator()
 
     if rom.ImGui.CollapsingHeader("Endless") then
         rom.ImGui.Text("Configure scaling parameters beyond 12 biomes.")

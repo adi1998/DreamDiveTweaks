@@ -1,30 +1,3 @@
---#region Dodge logging
-
--- local totalDodge = 0
-
--- modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
---     if args.DestinationId == game.CurrentRun.Hero.ObjectId and args.Property == "DodgeChance" then
---         print(args.ValueChangeType, args.Value)
---         if args.ValueChangeType == "Add" then
---             totalDodge = totalDodge + args.Value
---             print("totalDodge", totalDodge)
---         end
---     end
---     return base(args)
--- end)
-
--- modutil.mod.Path.Wrap("LeaveRoom", function (base, ...)
---     totalDodge = 0
---     return base(...)
--- end)
-
--- modutil.mod.Path.Wrap("DeathAreaSwitchRoom", function (base, ...)
---     totalDodge = 0
---     return base(...)
--- end)
-
---#endregion
-
 function ScaleDodge(linearLimit, decay, count, delta, softcapIncrement)
     if count <= linearLimit then
         return count * delta

@@ -229,6 +229,21 @@ end)
 
 --#region 3rd hammer after 4th region
 
+function mod.LateHammerEligible(source, args)
+    args = args or {}
+    if config.hammer_hermes_interval < 1 then
+        config.hammer_hermes_interval = 4
+    end
+    local lootName = args.LootName or "WeaponUpgrade"
+    local depth = args.Depth or (game.CurrentRun.EnteredBiomes or 0)
+    local hammers_picked = args.HammersPicked or (game.CurrentRun.LootTypeHistory[lootName] or 0)
+    local interval = args.HammerInterval or config.hammer_hermes_interval
+    local max_hammers = 2 + math.ceil((depth - 4)/interval)
+    print(lootName, hammers_picked, max_hammers, interval)
+    print(max_hammers > hammers_picked)
+    return max_hammers > hammers_picked
+end
+
 game.NamedRequirementsData[_PLUGIN.guid.."LateHammerLootRequirements"] =
 {
     -- unlock requirements
@@ -258,9 +273,7 @@ game.NamedRequirementsData[_PLUGIN.guid.."LateHammerLootRequirements"] =
         Value = 4,
     },
     {
-        Path = { "CurrentRun", "LootTypeHistory", "WeaponUpgrade" },
-        Comparison = "==",
-        Value = 2,
+        FunctionName = _PLUGIN.guid .. "." .. "LateHammerEligible"
     },
 }
 
@@ -309,88 +322,6 @@ table.insert(game.StoreData.WorldShop.GroupsOf[2].OptionsData, 3, {
 
 --#endregion
 
---#region 4th hammer after 8th region
-
-game.NamedRequirementsData[_PLUGIN.guid.."LaterHammerLootRequirements"] =
-{
-    -- unlock requirements
-    {
-        Path = { "GameState", "TextLinesRecord" },
-        CountOf =
-        {
-            "PoseidonFirstPickUp",
-            "DemeterFirstPickUp",
-            "HestiaFirstPickUp",
-            "AphroditeFirstPickUp",
-            "ZeusFirstPickUp",
-            "HephaestusFirstPickUp",
-        },
-        Comparison = ">=",
-        Value = 4,
-    },
-
-    -- run requirements
-    {
-        FunctionName = "RequiredNotInStore",
-        FunctionArgs = { Name = "WeaponUpgradeDrop", },
-    },
-    {
-        Path = { "CurrentRun", "EnteredBiomes" },
-        Comparison = ">",
-        Value = 8,
-    },
-    {
-        Path = { "CurrentRun", "LootTypeHistory", "WeaponUpgrade" },
-        Comparison = "==",
-        Value = 3,
-    },
-}
-
-table.insert(game.RewardStoreData.RunProgress, {
-    Name = "WeaponUpgrade",
-    GameStateRequirements =
-    {
-        NamedRequirements = { _PLUGIN.guid.."LaterHammerLootRequirements" },
-    }
-})
-
-table.insert(game.RewardStoreData.TartarusRewards, {
-    Name = "WeaponUpgrade",
-    GameStateRequirements =
-    {
-        NamedRequirements = { _PLUGIN.guid.."LaterHammerLootRequirements" },
-    }
-})
-
-table.insert(game.RewardStoreData.TyphonBossRewards, {
-    Name = "WeaponUpgrade",
-    GameStateRequirements =
-    {
-        NamedRequirements = { _PLUGIN.guid.."LaterHammerLootRequirements" },
-    }
-})
-
-table.insert(game.PresetEventArgs.NemesisBuyItemChoices.GetOptions,{
-    Name = "WeaponUpgrade", CostResourceName = "Money", CostResourceMin = 180, CostResourceMax = 205,
-    GameStateRequirements =
-    {
-        NamedRequirements = { _PLUGIN.guid.."LaterHammerLootRequirements", },
-    },
-})
-
-table.insert(game.StoreData.WorldShop.GroupsOf[2].OptionsData, 3, {
-    Name = "WeaponUpgradeDrop", Weight = 2.5,
-    ReplaceRequirements =
-    {
-        {
-            PathTrue = { "GameState", "UseRecord", "WeaponUpgrade" },
-        },
-        NamedRequirements = { _PLUGIN.guid.."LaterHammerLootRequirements" },
-    },
-})
-
---#endregion
-
 --#region 3rd Hermes drop
 game.NamedRequirementsData[_PLUGIN.guid.."LateHermesUpgradeRequirements"] =
 {
@@ -410,9 +341,11 @@ game.NamedRequirementsData[_PLUGIN.guid.."LateHermesUpgradeRequirements"] =
         HasNone = { "HermesUpgrade", "ShopHermesUpgrade", },
     },
     {
-        Path = { "CurrentRun", "LootTypeHistory", "HermesUpgrade" },
-        Comparison = "==",
-        Value = 2,
+        FunctionName = _PLUGIN.guid .. "." .. "LateHammerEligible",
+        FunctionArgs =
+        {
+            LootName = "HermesUpgrade"
+        }
     },
     {
         Path = { "CurrentRun", "EnteredBiomes" },
@@ -442,12 +375,11 @@ table.insert(game.RewardStoreData.RunProgress, {
 
 modutil.mod.Path.Wrap("StartRoom", function (base, currentRun, currentRoom)
     base(currentRun, currentRoom)
-    if currentRun.IsDreamRun and (currentRun.EnteredBiomes - 1) % 4 == 0 and currentRoom.BiomeStartRoom then
-        game.CurrentRun.MaxGodsPerRun = 4 + (currentRun.EnteredBiomes - 1) / 4
-        if currentRun.EnteredBiomes > 12 then
-            game.CurrentRun.LootTypeHistory.WeaponUpgrade = math.min(game.CurrentRun.LootTypeHistory.WeaponUpgrade or 0, 3)
-            game.CurrentRun.LootTypeHistory.HermesUpgrade = math.min(game.CurrentRun.LootTypeHistory.HermesUpgrade or 0, 2)
-        end
+    if config.max_gods_increase_interval < 1 then
+        config.max_gods_increase_interval = 4
+    end
+    if currentRun.IsDreamRun and currentRun.EnteredBiomes > 4 and (currentRun.EnteredBiomes - 4 - 1) % config.max_gods_increase_interval + 1 == 1 and currentRoom.BiomeStartRoom then
+        game.CurrentRun.MaxGodsPerRun = 4 + (currentRun.EnteredBiomes - 4 - 1) / config.max_gods_increase_interval + 1
     end
 end)
 

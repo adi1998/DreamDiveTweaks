@@ -296,3 +296,10 @@ for _, functionName in ipairs(NPC_fucntions) do
         return base(source, args, screen)
     end)
 end
+
+modutil.mod.Path.Wrap("IsHealthHidden", function (base)
+    if game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
+        return game.HasHeroTraitValue("HideHealth") and game.CurrentRun.Cleared
+    end
+    return base()
+end)
