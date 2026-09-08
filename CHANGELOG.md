@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.11.0] - 2026-09-08
+
 - Allow the dodge cap in endless to be configurable.
 - Fix normal runs being affected by the `biome_count` setting.
 
@@ -142,7 +144,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.10.0...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.11.0...HEAD
+[1.11.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.10.0...1.11.0
 [1.10.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.1...1.9.0
 [1.8.1]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.0...1.8.1
