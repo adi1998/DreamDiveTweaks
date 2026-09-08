@@ -1,5 +1,3 @@
-print("current run length", game.GameData.FullRunBiomeCount)
-
 local previousConfig = {
     biome_pool = {
     },
@@ -38,7 +36,6 @@ function DrawMenu()
             if selected and value ~= previousConfig.biome_count then
                 config.biome_count = value
                 previousConfig.biome_count = value
-                game.GameData.FullRunBiomeCount = config.biome_count
             end
 
             if mod.IsZagAvailable then
@@ -48,7 +45,6 @@ function DrawMenu()
                     mod.IsZag = not value
                     mod.MaxAllowedBiomeCount = (mod.IsZag and 12) or 8
                     config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
-                    game.GameData.FullRunBiomeCount = config.biome_count
 
                     PurgeZagBiomeSets()
                     if mod.MaxAllowedBiomeCount == 12 then

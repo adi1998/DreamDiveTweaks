@@ -1,6 +1,4 @@
-local fullRunBiomeCountProxy = {
-    FullRunBiomeCount = game.GameData.FullRunBiomeCount
-}
+local fullRunBiomeCountProxy = game.GameData.FullRunBiomeCount
 
 game.GameData.FullRunBiomeCount = nil
 
@@ -10,13 +8,16 @@ setmetatable(game.GameData, {
             if not game.CurrentHubRoom and game.CurrentRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
                 return 999
             end
-            return fullRunBiomeCountProxy[k]
+            if not game.CurrentHubRoom and game.CurrentRun and game.CurrentRun.IsDreamRun then
+                return config.biome_count
+            end
+            return fullRunBiomeCountProxy
         end
     end,
 
     __newindex = function(t, k, v)
         if k == "FullRunBiomeCount" then
-            fullRunBiomeCountProxy[k] = v
+            fullRunBiomeCountProxy = v
         else
             rawset(t, k, v)
         end

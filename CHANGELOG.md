@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 - Allow the dodge cap in endless to be configurable.
+- Fix normal runs being affected by the `biome_count` setting.
 
 ## [1.10.0] - 2026-09-02
 

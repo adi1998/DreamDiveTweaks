@@ -31,7 +31,6 @@ modutil.mod.Path.Wrap("HubPostBountyLoad", function (base, args)
             config.biome_count = game.CurrentRun[_PLUGIN.guid .. "StoredFullBiomeCount"]
             config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
             config.biome_count = math.max(config.biome_count, 2)
-            game.GameData.FullRunBiomeCount = config.biome_count
         end
     end
     return base(args)
