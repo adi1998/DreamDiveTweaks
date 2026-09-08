@@ -268,6 +268,13 @@ function DrawMenu()
         if selected then
             config.endless.damage_gain = value / 100
         end
+
+        rom.ImGui.Text("Global dodge hard cap")
+
+        value, selected = rom.ImGui.SliderInt("###globaldcap", config.endless.dodge_cap * 100, 1, 100, "%d%%")
+        if selected then
+            config.endless.dodge_cap = value / 100
+        end
     end
 
     if not game.IsEmpty(ImguiPluginMap) then

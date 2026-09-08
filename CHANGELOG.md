@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Allow the dodge cap in endless to be configurable.
+
 ## [1.10.0] - 2026-09-02
 
 - Allow configuring how frequently new gods/hammers are added to the loot pool.

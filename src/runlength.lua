@@ -239,8 +239,6 @@ function mod.LateHammerEligible(source, args)
     local hammers_picked = args.HammersPicked or (game.CurrentRun.LootTypeHistory[lootName] or 0)
     local interval = args.HammerInterval or config.hammer_hermes_interval
     local max_hammers = 2 + math.ceil((depth - 4)/interval)
-    print(lootName, hammers_picked, max_hammers, interval)
-    print(max_hammers > hammers_picked)
     return max_hammers > hammers_picked
 end
 
@@ -341,16 +339,16 @@ game.NamedRequirementsData[_PLUGIN.guid.."LateHermesUpgradeRequirements"] =
         HasNone = { "HermesUpgrade", "ShopHermesUpgrade", },
     },
     {
+        Path = { "CurrentRun", "EnteredBiomes" },
+        Comparison = ">",
+        Value = 4,
+    },
+    {
         FunctionName = _PLUGIN.guid .. "." .. "LateHammerEligible",
         FunctionArgs =
         {
             LootName = "HermesUpgrade"
         }
-    },
-    {
-        Path = { "CurrentRun", "EnteredBiomes" },
-        Comparison = ">",
-        Value = 4,
     },
 }
 

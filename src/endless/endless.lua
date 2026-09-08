@@ -187,13 +187,12 @@ end)
 
 local totalDodge = 0
 local totalCappedDodge = 0
-local dodgeCap = 0.96
 
 game.OnAnyLoad
 {
     function ()
         if game.CurrentRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
-            game.zerpDreamDiveTweaksEndlessDodgeMessage = "Capped to " .. dodgeCap * 100 .. "% in Endless."
+            game.zerpDreamDiveTweaksEndlessDodgeMessage = "Capped to " .. config.endless.dodge_cap * 100 .. "% in Endless."
         else
             game.zerpDreamDiveTweaksEndlessDodgeMessage = ""
         end
@@ -235,15 +234,15 @@ modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
         print(args.ValueChangeType, args.Value)
         if args.ValueChangeType == "Add" then
             local value = args.Value
-            if totalDodge < dodgeCap then
-                if totalDodge + args.Value > dodgeCap then
-                    args.Value = dodgeCap - totalDodge
+            if totalDodge < config.endless.dodge_cap then
+                if totalDodge + args.Value > config.endless.dodge_cap then
+                    args.Value = config.endless.dodge_cap - totalDodge
                 else
 
                 end
             else
-                if totalDodge + args.Value < dodgeCap then
-                    args.Value = (totalDodge + args.Value) - dodgeCap
+                if totalDodge + args.Value < config.endless.dodge_cap then
+                    args.Value = (totalDodge + args.Value) - config.endless.dodge_cap
                 else
                     args.Value = 0
                 end

@@ -43,7 +43,8 @@ local config = {
   endless = {
     health_gain = 0.1,
     damage_gain = 0.1,
-    gain_type = "exp"
+    gain_type = "exp",
+    dodge_cap = 0.95,
   },
   max_gods_increase_interval = 4,
   hammer_hermes_interval = 4,
@@ -68,7 +69,8 @@ local configDesc = {
   endless = {
     health_gain = "Percentage increase in health of enemies per biome after region 12.",
     damage_gain = "Percentage increase in damage of enemies per biome after region 12.",
-    gain_type = "Choose between linear or exponential scaling after region 12. Valid values: exp, linear"
+    gain_type = "Choose between linear or exponential scaling after region 12. Valid values: exp, linear",
+    dodge_cap = "Maximum allowed dodge chance in endless mode."
   },
   max_gods_increase_interval = "Increase max god limit every X biomes.",
   hammer_hermes_interval = "Increase Daedalus hammer and Hermes reward limit every X biomes."
