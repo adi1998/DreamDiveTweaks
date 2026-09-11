@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add endless option for regular runs.
+
 ## [1.11.0] - 2026-09-08
 
 - Allow the dodge cap in endless to be configurable.
