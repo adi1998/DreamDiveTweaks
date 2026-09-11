@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.12.0] - 2026-09-11
+
 - Add endless option for regular runs.
 
 ## [1.11.0] - 2026-09-08
@@ -146,7 +148,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.11.0...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.12.0...HEAD
+[1.12.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.11.0...1.12.0
 [1.11.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.10.0...1.11.0
 [1.10.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.9.0...1.10.0
 [1.9.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.8.1...1.9.0
