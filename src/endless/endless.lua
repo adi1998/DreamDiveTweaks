@@ -156,16 +156,23 @@ function  mod.GetScaledDreamBiomeData(dreamBiomeData, depth)
     return new_entry
 end
 
+local ignoreNextBiomeEnemyShrineUpgradeLookup = game.ToLookup({
+    "I",
+    "Q",
+    "Styx"
+})
+
 modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
     currentRun = currentRun or game.CurrentRun
 	args = args or {}
 
-    --#region Vow of Menace fix for final biome
+    --#region Vow of Menace fix for final biomes
     if (
         unit and unit.IsFromNextBiomeEnemyShrineUpgrade and
         currentRun and currentRun.CurrentRoom and currentRun.CurrentRoom.RoomSetName and
-        not game.MetaUpgradeData.NextBiomeEnemyShrineUpgrade.BiomeEnemySets[currentRun.CurrentRoom.RoomSetName]
+        ignoreNextBiomeEnemyShrineUpgradeLookup[currentRun.CurrentRoom.RoomSetName]
     ) then
+        print("resetting IsFromNextBiomeEnemyShrineUpgrade for", unit.Name)
         unit.IsFromNextBiomeEnemyShrineUpgrade = nil
     end
     --#endregion

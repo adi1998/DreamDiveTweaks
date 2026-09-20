@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix Vow of Menace scaling bug for ZJ enemies.
+
 ## [1.13.0] - 2026-09-20
 
 - Fix Vow of Menace scaling up enemies when no replacement is found.
