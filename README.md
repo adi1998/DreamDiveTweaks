@@ -16,17 +16,25 @@ It is recommended to backup your save from `%USERPROFILE%\Saved Games\Hades II\P
 
 Use the Imgui menu (default toggle keybind: INSERT) in the Crossroads training grounds.
 
-![imgui1](images/imgui1.png)
+![imgui1a](images/imgui1a.png)
+
+<br>
+
+![imgui1b](images/imgui1b.png)
 
 <br>
 
 ![imgui2](images/imgui2.png)
 
+### Endless mode
+
+The mod also offers an option for endless mode once a regular run has been completed. You can end an endless run anytime by holding down `Gift + Salute` for 1 second.
+
+![imgui3](images/imgui3.png)
+
 ## Some permanent tweaks and interactions
 
-- Hermes shrine rewards (if any) will show up in the final shop of the final region.
-- A 5th god, 3rd hammer and 3rd Hermes boon will become available after 4 biomes have been completed.
-- A 6th god and 4th hammer will become available after 8 biomes have been completed.
+- More gods, hammers and Hermes' boons will become available after 4 biomes have been completed (frequency configurable).
 - If harvesting points are enabled Plentiful Forage will also become elligible in Dream Dives.
 - Secret bosses will start scaling up from the 4th biome.
 - Vow or Rivals scales proportionally to the number of biomes, so an 8 biome run with VoR set to 2 will have the first 4 bosses be Unrivaled.

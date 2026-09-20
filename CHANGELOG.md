@@ -2,7 +2,8 @@
 
 ## [Unreleased]
 
-- Fix Vow of Menace scaling up enemies when no replacement is found
+- Fix Vow of Menace scaling up enemies when no replacement is found.
+- Add a way to end an endless run by holding down `Gift + Salute`.
 
 ## [1.12.0] - 2026-09-11
 

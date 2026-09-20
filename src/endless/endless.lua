@@ -314,3 +314,36 @@ modutil.mod.Path.Wrap("IsHealthHidden", function (base)
     end
     return base()
 end)
+
+game.OnControlPressed{ "Gift",
+    function (triggerArgs)
+        if game.CurrentRun and game.CurrentRun.IsDreamRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] and game.IsEmpty(game.ActiveScreens) then
+            game.wait(0.2)
+            if game.IsControlDown({ Name = "Gift" }) and game.IsControlDown({Name = "SpecialInteract"}) then
+                local notifyName = _PLUGIN.guid .. "KillReleased"
+                local threshold  = 0.9
+                game.NotifyOnControlReleased({
+                    Names   = { "Gift" },
+                    Notify  = notifyName,
+                    Timeout = threshold,
+                })
+                game.NotifyOnControlReleased({
+                    Names   = { "SpecialInteract" },
+                    Notify  = notifyName,
+                    Timeout = threshold,
+                })
+                game.waitUntil( notifyName )
+                local timedOut = game._eventTimeoutRecord and game._eventTimeoutRecord[ notifyName ]
+                if game._eventTimeoutRecord then
+                    game._eventTimeoutRecord[ notifyName ] = nil
+                end
+                if timedOut then
+                    game.CurrentRun.Hero.IsDead = false
+                    game.Kill(game.CurrentRun.Hero)
+                    return
+                end
+                return
+            end
+        end
+    end
+}
