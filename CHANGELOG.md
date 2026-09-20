@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix Vow of Menace scaling up enemies when no replacement is found
+
 ## [1.12.0] - 2026-09-11
 
 - Add endless option for regular runs.

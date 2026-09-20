@@ -159,6 +159,17 @@ end
 modutil.mod.Path.Wrap("SetupUnit", function (base, unit, currentRun, args)
     currentRun = currentRun or game.CurrentRun
 	args = args or {}
+
+    --#region Vow of Menace fix for final biome
+    if (
+        unit and unit.IsFromNextBiomeEnemyShrineUpgrade and
+        currentRun and currentRun.CurrentRoom and currentRun.CurrentRoom.RoomSetName and
+        not game.MetaUpgradeData.NextBiomeEnemyShrineUpgrade.BiomeEnemySets[currentRun.CurrentRoom.RoomSetName]
+    ) then
+        unit.IsFromNextBiomeEnemyShrineUpgrade = nil
+    end
+    --#endregion
+
     if unit and unit.DreamBiomeData and unit.DreamBiomeData[12] and currentRun and currentRun.IsDreamRun and currentRun.EnteredBiomes > 12 then
         print("scaling unit ", unit.Name, "for depth ", currentRun.EnteredBiomes)
         scalingCache[unit.Name] = scalingCache[unit.Name] or {}
