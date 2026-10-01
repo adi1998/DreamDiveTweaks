@@ -28,7 +28,12 @@ Use the Imgui menu (default toggle keybind: INSERT) in the Crossroads training g
 
 ### Endless mode
 
-The mod also offers an option for endless mode once a regular run has been completed. You can end an endless run anytime by holding down `Gift + Salute` for 1 second.
+The mod also offers an option for endless mode once a regular run has been completed. This puts every available legal biome into the pool. You can end an endless run anytime by holding down `Gift + Salute` for 1 second.
+
+Unlock requirements:
+- Dream Dives are unlocked.
+- True ending(credits) reached for converting Surface/Underworld runs to an endless run.
+- 10 wins against Hades for converting a Zagreus' Journey run to an endless run.
 
 ![imgui3](images/imgui3.png)
 

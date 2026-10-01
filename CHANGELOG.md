@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Block endless button in ZJ victory screen until 10 wins have been achieved.
+
 ## [1.13.1] - 2026-09-20
 
 - Fix Vow of Menace scaling bug for ZJ enemies.

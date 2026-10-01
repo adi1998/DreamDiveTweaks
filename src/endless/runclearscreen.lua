@@ -43,6 +43,17 @@ game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
                 {
 					PathTrue = { "GameState", "ReachedTrueEnding" },
 				},
+                {
+                    PathFalse = { "CurrentRun", "ModsNikkelMHadesBiomesIsModdedRun" }
+                }
+            },
+            {
+                {
+                    PathTrue = { "GameState", "TextLinesRecord", "Ending01" },
+                },
+                {
+                    PathTrue = { "CurrentRun", "ModsNikkelMHadesBiomesIsModdedRun" }
+                },
             }
         },
         NamedRequirements = { "DreamRunsUnlocked" },
@@ -50,15 +61,16 @@ game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
 }
 
 function mod.StartEndlessRun(screen)
-    game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] = true
     if not game.CurrentRun.IsDreamRun then
         game.CurrentRun.IsDreamRun = true
+        mod.SetupBiomeSets()
         game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"], game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"] = GenerateRoute()
         local key = "DreamPointsDrop"
         local id = game.SpawnObstacle({ Name = key, DestinationId = game.CurrentRun.Hero.ObjectId, Group = "Standing" })
         local reward = game.CreateConsumableItem( id, key, 0 )
         game.MapState.RoomRequiredObjects[reward.ObjectId] = reward
     end
+    game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] = true
     print("Starting endless mode.")
     game.CloseRunClearScreen(screen)
 end

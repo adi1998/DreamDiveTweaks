@@ -317,7 +317,7 @@ function GenerateRoute()
     return route, biomeList
 end
 
-mod.SelectNextDreamBiomeWrap = function (base, source, args)
+function mod.SetupBiomeSets()
     -- clamp max biome count and configured biome count if we detect ZJ doesn't have its requirements met
     if mod.IsZag and (game.GameState.ModsNikkelMHadesBiomesClearedRunsCache or 0) < 1 then
         if config.biome_count > 8 then
@@ -345,6 +345,10 @@ mod.SelectNextDreamBiomeWrap = function (base, source, args)
     if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
         UpdateEasyBiomeZag()
     end
+end
+
+mod.SelectNextDreamBiomeWrap = function (base, source, args)
+    mod.SetupBiomeSets()
 
     -- on getting a pre generated route from elsewhere
     if not game.IsEmpty(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]) and (game.CurrentRun.EnteredBiomes or 0) == 0 then
