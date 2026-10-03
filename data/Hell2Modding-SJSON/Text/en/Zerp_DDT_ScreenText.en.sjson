@@ -1,0 +1,20 @@
+{
+  lang = "en"
+  Texts = [
+    {
+      Id = "DreamDiveTweaksEndlessModeMessage"
+      DisplayName = "Endless Mode"
+      Description = """
+      Welcome to endless mode. Allows you to continue facing foes with ever increasing difficulty.
+
+      · Converts a regular Surface/Underworld run into a {#AlertHeaderFormat}Dream Dive{#Prev}.
+
+      · Allows story encounters you've already seen this night to occur again.      
+
+      · It's recommended to checkout the endless config parameters in the ImGui menu and tweak them to your liking.
+
+      · Finally, you can end an endless run anytime by holding down the {G} + {SI} buttons for 1 second.
+      """
+    }
+  ]
+}

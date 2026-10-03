@@ -73,6 +73,16 @@ function mod.StartEndlessRun(screen)
     game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] = true
     print("Starting endless mode.")
     game.CloseRunClearScreen(screen)
+    if config.first_time then
+        mod.OpenFirstTimeEndlessScreen()
+        config.first_time = false
+    end
+end
+
+function mod.OpenFirstTimeEndlessScreen()
+    game.ZeroMouseTether( "ShowDreamRunMessage" )
+	game.GenericInfoPresentation( { InfoMessageId = "DreamDiveTweaksEndlessModeMessage" } )
+	game.UnzeroMouseTether( "ShowDreamRunMessage" )
 end
 
 modutil.mod.Path.Wrap("CloseRunClearScreen", function (base, screen)

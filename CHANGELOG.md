@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Show an announcement screen explaining endless mode the first time a user starts one.
+
 ## [1.13.2] - 2026-10-01
 
 - Block endless button in ZJ victory screen until 10 wins have been achieved.
