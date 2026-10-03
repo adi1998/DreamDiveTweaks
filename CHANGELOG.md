@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.13.3] - 2026-10-03
+
 - Show an announcement screen explaining endless mode the first time a user starts one.
 
 ## [1.13.2] - 2026-10-01
@@ -163,7 +165,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.2...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.3...HEAD
+[1.13.3]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.2...1.13.3
 [1.13.2]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.1...1.13.2
 [1.13.1]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.0...1.13.1
 [1.13.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.12.0...1.13.0
