@@ -237,7 +237,7 @@ local locales = {
 }
 
 for _, locale in pairs(locales) do
-    local filePath = rom.path.combine(rom.paths.Content, "Game\\Text\\" .. locale .."\\HelpText." .. locale .. ".sjson")
+    local filePath = rom.path.combine(rom.paths.Content(), "Game\\Text\\" .. locale .."\\HelpText." .. locale .. ".sjson")
     sjson.hook(filePath, function (data)
         for _, value in pairs(data.Texts) do
             if value.Id == "Dodge" then
