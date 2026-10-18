@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+- Update Hades' scaling tomaatch the new sclaing in ZJ.
+- Clarify when purging wells can show up in the ImGui menu.
+
 ## [1.13.3] - 2026-10-03
 
 - Show an announcement screen explaining endless mode the first time a user starts one.
