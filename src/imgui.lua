@@ -235,7 +235,7 @@ function DrawMenu()
 
         rom.ImGui.Separator()
 
-        value, checked = rom.ImGui.Checkbox("Add purging wells to post boss rooms", config.purging_well)
+        value, checked = rom.ImGui.Checkbox("Add purging wells to post boss rooms. Only shows up alongside Charon's well.", config.purging_well)
         if checked then
             config.purging_well = value
         end
