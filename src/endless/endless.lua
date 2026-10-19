@@ -52,7 +52,20 @@ modutil.mod.Path.Wrap("IsBossDifficultyShrineUpgradeActive", function(base, sour
     return base(source, args)
 end)
 
+local function copyDataFromPathArray(path_array, table1, table2)
+    for index, value in ipairs(path_array) do
+        modutil.mod.IndexArray.Set(table1, value, modutil.mod.IndexArray.Get(table2, value))
+    end
+end
+
 function mod.CleanupBiomeVisits()
+    local paths_not_to_be_cleared = {
+        { "CurrentRun", "RoomCountCache", "C_Boss01" }
+    }
+
+    local persistent_data_copy = {}
+    copyDataFromPathArray(paths_not_to_be_cleared, persistent_data_copy, game)
+
     game.CurrentRun.EncountersOccurredCache = {}
     game.CurrentRun.EncountersCompletedCache = {}
     game.CurrentRun.RoomsEntered = {}
@@ -70,12 +83,6 @@ function mod.CleanupBiomeVisits()
         game.CurrentRun[NPCRando_guid .. "SwappedStoryMap"] = {}
         game.CurrentRun[NPCRando_guid .. "StoryRoomsCreated"] = {}
     end
-
-    -- for i = 1, #game.CurrentRun.RoomHistory do
-    --     if game.CurrentRun.RoomHistory[i].Name == "N_Hub" then
-    --         table.remove(game.CurrentRun.RoomHistory, i)
-    --     end
-    -- end
 
     game.CurrentRun.RoomHistory = {}
     game.CurrentRun.BiomesReached = {}
@@ -98,6 +105,7 @@ function mod.CleanupBiomeVisits()
         game.CurrentRun.ThanatosSpawns = 0
         game.CurrentRun.SupportAINames = {}
     end
+    copyDataFromPathArray(paths_not_to_be_cleared, game, persistent_data_copy)
 end
 
 local scalingCache = {}

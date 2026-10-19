@@ -4,6 +4,7 @@
 
 - Update Hades' scaling to match the new scaling in ZJ.
 - Clarify when purging wells can show up in the ImGui menu.
+- Endless: Fix Zagreus' contract showing up even if you already beat him.
 
 ## [1.13.3] - 2026-10-03
 
