@@ -2,14 +2,15 @@
 
 ## [Unreleased]
 
+#### Endless
+- The region visit order is now displayed behind the trait tray tabs on the run end screen.
+- Add MultiDressHelper dependency to handle multiple active Arachne dresses properly.
+
 ## [1.13.4] - 2026-10-19
 
 - Update Hades' scaling to match the new scaling in ZJ.
 - Clarify when purging wells can show up in the ImGui menu.
-
-#### Endless 
-- Fix Zagreus' contract showing up even if you already beat him.
-- The biome visit order is now displayed behind the trait tray tabs.
+- Endless: Fix Zagreus' contract showing up even if you already beat him.
 
 ## [1.13.3] - 2026-10-03
 

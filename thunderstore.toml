@@ -18,6 +18,7 @@ SGG_Modding-SJSON = "1.0.0"
 SGG_Modding-ModUtil = "4.0.1"
 NikkelM-Resources_In_Chaos_Trials = "1.0.1"
 zerp-BoonOverflowFix = "1.0.0"
+zerp-MultiDressHelper = "1.0.0"
 
 [package.rom_soft_deps]
 NikkelM-Zagreus_Journey = "1.2.0"
