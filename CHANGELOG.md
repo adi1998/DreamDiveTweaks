@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix Moon Beam not prioritising Path of Stars if the next biome is Tartarus or Summit.
+
 #### Endless
 - The region visit order is now displayed behind the trait tray tabs on the run end screen.
 - Add MultiDressHelper dependency to handle multiple active Arachne dresses properly.

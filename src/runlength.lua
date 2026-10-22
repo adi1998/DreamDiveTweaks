@@ -466,6 +466,7 @@ end
 
 --#endregion
 
+--#region Zagreus dream scaling fix
 modutil.mod.Path.Wrap("ZagreusDeathDefiancePresentation", function (base, boss, currentRun, aiStage)
     boss.MaxHealth = aiStage.NewMaxHealth or boss.MaxHealth
 	if currentRun.IsDreamRun and boss.DreamBiomeData ~= nil then
@@ -476,3 +477,45 @@ modutil.mod.Path.Wrap("ZagreusDeathDefiancePresentation", function (base, boss, 
 	end
     return base(boss, currentRun, aiStage)
 end)
+--#endregion
+
+--#region Moon Beam fix
+
+if modutil.mod.Path.Get("TraitData.SpellTalentKeepsake.AcquireFunctionArgs", game) then
+    game.TraitData.SpellTalentKeepsake.AcquireFunctionArgs[_PLUGIN.guid .. "PostponePriorityRewardSelectionInRooms"] = {
+        "Dream_PostBoss01",
+        "Dream_PostBoss02",
+        "Dream_PostBoss03",
+    }
+end
+
+if modutil.mod.Path.Get("TraitData.SpellTalentKeepsake.AcquireFunctionArgs.AlternatePriorityRewardPerRoom", game) then
+    game.OverwriteTableKeys(game.TraitData.SpellTalentKeepsake.AcquireFunctionArgs.AlternatePriorityRewardPerRoom, {
+        I_Intro = "TalentBigDrop",
+        Q_Intro = "TalentBigDrop",
+    })
+end
+
+modutil.mod.Path.Wrap("StartRoom", function (base, currentRun, currentRoom)
+    return ( function (returnval)
+        if currentRoom.BiomeStartRoom and currentRun[_PLUGIN.guid .. "TriggerKeepsakeAcquireSpellDropInIntro"] and game.HeroHasTrait("SpellTalentKeepsake") then
+            local trait = game.GetHeroTrait("SpellTalentKeepsake")
+            game.KeepsakeAcquireSpellDrop(trait.AcquireFunctionArgs, trait)
+            print("resetting TriggerKeepsakeAcquireSpellDropInIntro")
+            currentRun[_PLUGIN.guid .. "TriggerKeepsakeAcquireSpellDropInIntro"] = nil
+        end
+        return returnval
+    end )( base(currentRun, currentRoom) )
+end)
+
+modutil.mod.Path.Wrap("KeepsakeAcquireSpellDrop", function (base, args, trait)
+    args = args or {}
+    if game.CurrentRun.CurrentRoom and game.Contains(args[_PLUGIN.guid .. "PostponePriorityRewardSelectionInRooms"] or {}, game.CurrentRun.CurrentRoom.Name) then
+        print("setting TriggerKeepsakeAcquireSpellDropInIntro")
+		game.CurrentRun[_PLUGIN.guid .. "TriggerKeepsakeAcquireSpellDropInIntro"] = true
+		return
+	end
+    return base(args, trait)
+end)
+
+--#endregion
