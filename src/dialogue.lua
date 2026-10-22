@@ -57,7 +57,7 @@ local hypnosPostBossVoiceLinesPatch =
 
 function mod.CheckDreamBiomesLeft(source, functionArgs, args)
     game.CurrentRun.EnteredBiomes = game.CurrentRun.EnteredBiomes or 0
-    local result = functionArgs.BiomesLeft == game.GameData.FullRunBiomeCount - game.CurrentRun.EnteredBiomes
+    local result = functionArgs.BiomesLeft == (game.GameData.FullRunBiomeCount - game.CurrentRun.EnteredBiomes)
     if functionArgs.Invert then
         return not result
     end

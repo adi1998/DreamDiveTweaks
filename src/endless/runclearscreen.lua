@@ -60,6 +60,10 @@ game.ScreenData.RunClear.ComponentData[_PLUGIN.guid .. "EndlessButton"] =
     }
 }
 
+if modutil.mod.Path.Get("ScreenData.RunClear.ComponentData.DreamRunClearMessageText.Group", game) then
+    game.ScreenData.RunClear.ComponentData.DreamRunClearMessageText.Group = "Combat_Menu"
+end
+
 function mod.StartEndlessRun(screen)
     if not game.CurrentRun.IsDreamRun then
         game.CurrentRun.IsDreamRun = true
