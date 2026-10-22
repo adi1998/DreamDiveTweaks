@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.13.5] - 2026-10-22
+
 - Fix Moon Beam not prioritising Path of Stars if the next biome is Tartarus or Summit.
 
 #### Endless
@@ -177,7 +179,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.4...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.5...HEAD
+[1.13.5]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.4...1.13.5
 [1.13.4]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.3...1.13.4
 [1.13.3]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.2...1.13.3
 [1.13.2]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.1...1.13.2
