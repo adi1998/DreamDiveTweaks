@@ -116,10 +116,9 @@ local function on_ready()
 
     mod.IsZagAvailable = zj and
                          zj.IsModEnabledAndInstallationValid and
-                         zj.IsModEnabledAndInstallationValid() and
-                         not zj.GetModConfigValueByLeafKey("z_ExcludeFromDreamDives")
+                         zj.IsModEnabledAndInstallationValid()
 
-    mod.IsZag = mod.IsZagAvailable and (not config.biome_pool.disable_zag_biomes)
+    mod.IsZag = mod.IsZagAvailable and not zj.GetModConfigValueByLeafKey("z_ExcludeFromDreamDives")
 
     mod.MaxAllowedBiomeCount = (mod.IsZag and 12) or 8
 

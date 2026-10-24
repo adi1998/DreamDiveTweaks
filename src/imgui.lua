@@ -26,6 +26,28 @@ local curve_display_name = {
     linear = "Linear"
 }
 
+function mod.ProcessZjDreamDiveConfigChange()
+    print("Processing ZJ DreamDive config change")
+    mod.IsZag = not zj.config.gameplay.z_ExcludeFromDreamDives
+    mod.MaxAllowedBiomeCount = (mod.IsZag and 12) or 8
+    config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
+
+    PurgeZagBiomeSets()
+    if mod.MaxAllowedBiomeCount == 12 then
+        UpdateZagBiomeSets()
+    end
+
+    PurgeEasyBiome()
+    if config.biome_pool.larger_starting_pool then
+        UpdateEasyBiome()
+    end
+
+    PurgeEasyBiomeZag()
+    if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
+        UpdateEasyBiomeZag()
+    end
+end
+
 function DrawMenu()
 
     local value, selected, checked
@@ -39,27 +61,10 @@ function DrawMenu()
             end
 
             if mod.IsZagAvailable then
-                value, checked = rom.ImGui.Checkbox("Disable Zagreus' Journey (Hades 1) biomes in Dream Dives", config.biome_pool.disable_zag_biomes)
+                value, checked = rom.ImGui.Checkbox("Disable Zagreus' Journey (Hades 1) biomes in Dream Dives", zj.config.gameplay.z_ExcludeFromDreamDives)
                 if checked then
-                    config.biome_pool.disable_zag_biomes = value
-                    mod.IsZag = not value
-                    mod.MaxAllowedBiomeCount = (mod.IsZag and 12) or 8
-                    config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
-
-                    PurgeZagBiomeSets()
-                    if mod.MaxAllowedBiomeCount == 12 then
-                        UpdateZagBiomeSets()
-                    end
-
-                    PurgeEasyBiome()
-                    if config.biome_pool.larger_starting_pool then
-                        UpdateEasyBiome()
-                    end
-
-                    PurgeEasyBiomeZag()
-                    if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
-                        UpdateEasyBiomeZag()
-                    end
+                    zj.config.gameplay.z_ExcludeFromDreamDives = value
+                    game[ZJ_guid].ApplyDreamDiveExclusionConfig()
                 end
             end
 

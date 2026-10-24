@@ -8,3 +8,10 @@ table.insert(game.EncounterData.OpeningEmpty.GameStateRequirements.OrRequirement
     Comparison = ">",
     Value = 0
 })
+
+if mod.IsZagAvailable then
+    modutil.mod.Path.Wrap(ZJ_guid .. "." .. "ApplyDreamDiveExclusionConfig", function (base, ...)
+        mod.ProcessZjDreamDiveConfigChange()
+        return base(...)
+    end)
+end

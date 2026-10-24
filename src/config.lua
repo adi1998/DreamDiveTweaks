@@ -9,7 +9,6 @@ local config = {
     hard_last_biome = false,
     larger_starting_pool = false,
     deterministic_biome_order = false,
-    disable_zag_biomes = false,
     custom_order = false,
     custom_order_data = {
       ["1"] = "Random",
