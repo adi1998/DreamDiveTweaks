@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.13.6] - 2026-10-24
+
 - Fix endless being broken for Underworld, Surface and Zagreus Journey routes.
 
 ## [1.13.5] - 2026-10-22
@@ -181,7 +183,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.5...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.6...HEAD
+[1.13.6]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.5...1.13.6
 [1.13.5]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.4...1.13.5
 [1.13.4]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.3...1.13.4
 [1.13.3]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.2...1.13.3
