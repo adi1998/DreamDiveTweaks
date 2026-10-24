@@ -212,20 +212,6 @@ modutil.mod.Path.Wrap("SetupEncounter", function (base, encounterData, room)
     return base(encounterData, room)
 end)
 
-local totalDodge = 0
-local totalCappedDodge = 0
-
-game.OnAnyLoad
-{
-    function ()
-        if game.CurrentRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
-            game.zerpDreamDiveTweaksEndlessDodgeMessage = "Capped to " .. config.endless.dodge_cap * 100 .. "% in Endless."
-        else
-            game.zerpDreamDiveTweaksEndlessDodgeMessage = ""
-        end
-    end
-}
-
 local locales = {
     "de",
     "el",
@@ -256,6 +242,20 @@ for _, locale in pairs(locales) do
     end)
 end
 
+local totalDodge = 0
+local totalCappedDodge = 0
+
+game.OnAnyLoad
+{
+    function ()
+        if game.CurrentRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
+            game.zerpDreamDiveTweaksEndlessDodgeMessage = "Capped to " .. config.endless.dodge_cap * 100 .. "% in Endless."
+        else
+            game.zerpDreamDiveTweaksEndlessDodgeMessage = ""
+        end
+    end
+}
+
 modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
     if args.DestinationId == game.CurrentRun.Hero.ObjectId and args.Property == "DodgeChance" and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
         print(args.ValueChangeType, args.Value)
@@ -284,10 +284,13 @@ modutil.mod.Path.Wrap("SetLifeProperty", function (base, args)
     return base(args)
 end)
 
-modutil.mod.Path.Wrap("LeaveRoom", function (base, ...)
+modutil.mod.Path.Wrap("LeaveRoom", function (base, currentRun, door)
     totalDodge = 0
     totalCappedDodge = 0
-    return base(...)
+    if game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
+        currentRun.CurrentRoom.SkipLoadNextMap = nil
+    end
+    return base(currentRun, door)
 end)
 
 modutil.mod.Path.Wrap("DeathAreaSwitchRoom", function (base, ...)

@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix endless being broken for Underworld, Surface and Zagreus Journey routes.
+
 ## [1.13.5] - 2026-10-22
 
 - Fix Moon Beam not prioritising Path of Stars if the next biome is Tartarus or Summit.
