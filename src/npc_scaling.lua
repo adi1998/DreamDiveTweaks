@@ -198,3 +198,23 @@ if mod.IsZagAvailable then
         return base(upgradeOptions)
     end)
 end
+
+-- Block Gift Gift Gift from appearing in the last biome.
+if game.TraitData.EchoRepeatKeepsakeBoon then
+    game.TraitData.EchoRepeatKeepsakeBoon.GameStateRequirements = game.TraitData.EchoRepeatKeepsakeBoon.GameStateRequirements or {}
+
+    local newRequirement = {
+        Path = { "CurrentRun", "EnteredBiomes" },
+        Comparison = "<",
+        ValuePath = { "GameData", "FullRunBiomeCount" },
+    }
+
+    table.insert(game.TraitData.EchoRepeatKeepsakeBoon.GameStateRequirements, newRequirement)
+
+    for index, option in ipairs(game.PresetEventArgs.EchoBenefitChoices.UpgradeOptions) do
+        if option.ItemName == "EchoRepeatKeepsakeBoon" then
+            option.GameStateRequirements = option.GameStateRequirements or {}
+            table.insert(option.GameStateRequirements, newRequirement)
+        end
+    end
+end

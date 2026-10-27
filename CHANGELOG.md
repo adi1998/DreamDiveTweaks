@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Block Gift Gift Gift from appearing in the last biome.
+
 ## [1.13.6] - 2026-10-24
 
 - Fix endless being broken for Underworld, Surface and Zagreus Journey routes.
