@@ -109,10 +109,9 @@ modutil.mod.Path.Wrap("DeathPresentation", function (base, ...)
     base(...)
     if game.CurrentRun.IsDreamRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] and not
             (gameOver and gameOver.config and gameOver.config.enabled ) then
+        game.CurrentRun.Cleared = true
         game.thread(openDeathRunClearScreen)
         game.waitUntil(_PLUGIN.guid .. "CloseRunClearScreenTriggered")
-    end
-    if game.CurrentRun.IsDreamRun and game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
         game.CurrentRun.Cleared = nil
     end
 end)
