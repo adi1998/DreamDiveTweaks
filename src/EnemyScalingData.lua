@@ -368,28 +368,28 @@ local enemyScalingData =
 	{
 		DreamBiomeData =
 		{
-			[5] = { AddOutgoingDamageModifier = { PlayerMultiplier = 2.38 }, DataOverrides = { HealthMultiplier = 2.34 } },
-			[6] = { AddOutgoingDamageModifier = { PlayerMultiplier = 3.13 }, DataOverrides = { HealthMultiplier = 3.04 } },
-			[7] = { AddOutgoingDamageModifier = { PlayerMultiplier = 4.14 }, DataOverrides = { HealthMultiplier = 3.95 } },
-			[8] = { AddOutgoingDamageModifier = { PlayerMultiplier = 5.46 }, DataOverrides = { HealthMultiplier = 5.14 } },
-			[9] = { AddOutgoingDamageModifier = { PlayerMultiplier = 7.88 }, DataOverrides = { HealthMultiplier = 6.42 } },
-			[10] = { AddOutgoingDamageModifier = { PlayerMultiplier = 10.58 }, DataOverrides = { HealthMultiplier = 8.03 } },
-			[11] = { AddOutgoingDamageModifier = { PlayerMultiplier = 14.21 }, DataOverrides = { HealthMultiplier = 10.02 } },
-			[12] = { AddOutgoingDamageModifier = { PlayerMultiplier = 19.09 }, DataOverrides = { HealthMultiplier = 12.52 } },
+			[5] = { AddOutgoingDamageModifier = { PlayerMultiplier = 2.0 }, DataOverrides = { HealthMultiplier = 2.34 } },
+			[6] = { AddOutgoingDamageModifier = { PlayerMultiplier = 2.46 }, DataOverrides = { HealthMultiplier = 3.04 } },
+			[7] = { AddOutgoingDamageModifier = { PlayerMultiplier = 3.25 }, DataOverrides = { HealthMultiplier = 3.95 } },
+			[8] = { AddOutgoingDamageModifier = { PlayerMultiplier = 4.29 }, DataOverrides = { HealthMultiplier = 5.14 } },
+			[9] = { AddOutgoingDamageModifier = { PlayerMultiplier = 6.2 }, DataOverrides = { HealthMultiplier = 6.42 } },
+			[10] = { AddOutgoingDamageModifier = { PlayerMultiplier = 8.35 }, DataOverrides = { HealthMultiplier = 8.03 } },
+			[11] = { AddOutgoingDamageModifier = { PlayerMultiplier = 11.23 }, DataOverrides = { HealthMultiplier = 10.02 } },
+			[12] = { AddOutgoingDamageModifier = { PlayerMultiplier = 15.1 }, DataOverrides = { HealthMultiplier = 12.52 } },
 		},
 	},
 	Hades =
 	{
 		DreamBiomeData =
 		{
-			[5] = { AddOutgoingDamageModifier = { PlayerMultiplier = 1.85 }, DataOverrides = { HealingMultiplier = 1.2, HealthMultiplier = 1.76 } },
-			[6] = { AddOutgoingDamageModifier = { PlayerMultiplier = 2.44 }, DataOverrides = { HealingMultiplier = 1.7, HealthMultiplier = 2.29 } },
-			[7] = { AddOutgoingDamageModifier = { PlayerMultiplier = 3.22 }, DataOverrides = { HealingMultiplier = 2.3, HealthMultiplier = 2.97 } },
-			[8] = { AddOutgoingDamageModifier = { PlayerMultiplier = 4.25 }, DataOverrides = { HealingMultiplier = 3, HealthMultiplier = 3.86 } },
-			[9] = { AddOutgoingDamageModifier = { PlayerMultiplier = 6 }, DataOverrides = { HealingMultiplier = 3.75, HealthMultiplier = 4.8 } },
-			[10] = { AddOutgoingDamageModifier = { PlayerMultiplier = 8 }, DataOverrides = { HealingMultiplier = 4.7, HealthMultiplier = 5.99 } },
-			[11] = { AddOutgoingDamageModifier = { PlayerMultiplier = 10 }, DataOverrides = { HealingMultiplier = 5.88, HealthMultiplier = 7.46 } },
-			[12] = { AddOutgoingDamageModifier = { PlayerMultiplier = 12 }, DataOverrides = { HealingMultiplier = 7.36, HealthMultiplier = 9.31 } },
+			[5] = { AddOutgoingDamageModifier = { PlayerMultiplier = 1.68 }, DataOverrides = { HealingMultiplier = 1.2, HealthMultiplier = 1.76 } },
+			[6] = { AddOutgoingDamageModifier = { PlayerMultiplier = 2.09 }, DataOverrides = { HealingMultiplier = 1.7, HealthMultiplier = 2.29 } },
+			[7] = { AddOutgoingDamageModifier = { PlayerMultiplier = 2.77 }, DataOverrides = { HealingMultiplier = 2.3, HealthMultiplier = 2.97 } },
+			[8] = { AddOutgoingDamageModifier = { PlayerMultiplier = 3.66 }, DataOverrides = { HealingMultiplier = 3, HealthMultiplier = 3.86 } },
+			[9] = { AddOutgoingDamageModifier = { PlayerMultiplier = 5.29 }, DataOverrides = { HealingMultiplier = 3.75, HealthMultiplier = 4.8 } },
+			[10] = { AddOutgoingDamageModifier = { PlayerMultiplier = 6.5 }, DataOverrides = { HealingMultiplier = 4.7, HealthMultiplier = 5.99 } },
+			[11] = { AddOutgoingDamageModifier = { PlayerMultiplier = 8.7 }, DataOverrides = { HealingMultiplier = 5.88, HealthMultiplier = 7.46 } },
+			[12] = { AddOutgoingDamageModifier = { PlayerMultiplier = 11.2 }, DataOverrides = { HealingMultiplier = 7.36, HealthMultiplier = 9.31 } },
 		},
 	},
 	BaseFEnemy =

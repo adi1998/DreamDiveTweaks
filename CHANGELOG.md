@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Adjust scaling for Hades and Minotaur.
+
 ## [1.13.7] - 2026-10-29
 
 - Block Gift Gift Gift from appearing in the last biome.
