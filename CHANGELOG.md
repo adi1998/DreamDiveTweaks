@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.13.7] - 2026-10-29
+
 - Block Gift Gift Gift from appearing in the last biome.
 - Fix `CurrentRun.Cleared` flag being set in endless mode, causing issues with expected behavior.
 
@@ -186,7 +188,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.6...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.7...HEAD
+[1.13.7]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.6...1.13.7
 [1.13.6]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.5...1.13.6
 [1.13.5]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.4...1.13.5
 [1.13.4]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.3...1.13.4
