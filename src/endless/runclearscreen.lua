@@ -112,7 +112,6 @@ modutil.mod.Path.Wrap("DeathPresentation", function (base, ...)
         game.CurrentRun.Cleared = true
         game.thread(openDeathRunClearScreen)
         game.waitUntil(_PLUGIN.guid .. "CloseRunClearScreenTriggered")
-        game.CurrentRun.Cleared = nil
     end
 end)
 
