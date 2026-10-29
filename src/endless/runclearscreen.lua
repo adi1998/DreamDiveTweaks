@@ -77,6 +77,7 @@ function mod.StartEndlessRun(screen)
     game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] = true
     print("Starting endless mode.")
     game.CloseRunClearScreen(screen)
+    game.CurrentRun.Cleared = nil
     if config.endless.first_time then
         mod.OpenFirstTimeEndlessScreen()
         config.endless.first_time = false
