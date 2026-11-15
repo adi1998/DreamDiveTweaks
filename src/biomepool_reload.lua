@@ -377,19 +377,18 @@ mod.SelectNextDreamBiomeWrap = function (base, source, args)
 end
 
 function CheckOrderValid()
-    local set = {}
     for i = 1, config.biome_count do
-        if (set[config.biome_pool.custom_order_data[i..""]] or not game.Contains(all_biomes, config.biome_pool.custom_order_data[i..""])) and config.biome_pool.custom_order_data[i..""] ~= "Random" then
+        if not game.Contains(all_biomes, config.biome_pool.custom_order_data[i..""]) and config.biome_pool.custom_order_data[i..""] ~= "Random" then
             return false
-        end
-        if config.biome_pool.custom_order_data[i..""] ~= "Random" then
-            set[config.biome_pool.custom_order_data[i..""]] = true
         end
     end
     return true
 end
 
 CurrentPresetName = CurrentPresetName or "Underworld - Surface"
+
+CheckOrder = true
+IsOrderValid = true
 
 function DrawCustomOrderOptions()
 
@@ -409,6 +408,7 @@ function DrawCustomOrderOptions()
             CopyCustomOrder(default_order)
             mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
             config.biome_count = mod.MaxAllowedBiomeCount
+            IsOrderValid = true
         end
 
         local notCollapsed1
@@ -450,6 +450,14 @@ function DrawCustomOrderOptions()
                 end
                 rom.ImGui.EndCombo()
             end
+        end
+
+        if CheckOrder then
+            IsOrderValid = CheckOrderValid()
+            CheckOrder = false
+        end
+        if not IsOrderValid then
+            rom.ImGui.Text("WARNING: Invalid custom order, will be\nreverted to default order on run start")
         end
 
         rom.ImGui.Text("Select order preset")
