@@ -240,6 +240,11 @@ function CopyCustomOrder(order)
 end
 
 function GetCustomOrder()
+    if not CheckOrderValid() then
+        game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Invalid custom order, resetting to default order", 3, { OffsetY = -60, SkipRise = true })
+        CopyCustomOrder(default_order)
+        config.biome_count = mod.MaxAllowedBiomeCount
+    end
     local route = {}
     for i = 1, config.biome_count do
         route[i] = config.biome_pool.custom_order_data[i..""]
