@@ -468,7 +468,7 @@ function DrawCustomOrderOptions()
         rom.ImGui.Text("Select order preset")
         if rom.ImGui.BeginCombo("###biomeorderpreset", CurrentPresetName) then
             for presetName, presetData in pairs(preset_orders) do
-                if presetData.count <= mod.MaxAllowedBiomeCount and (not presetData.zag or mod.MaxAllowedBiomeCount == 12) then
+                if presetData.count <= mod.MaxAllowedBiomeCount and (not presetData.zag or mod.IsZag) then
                     if rom.ImGui.Selectable(presetName, (CurrentPresetName == presetName)) then
                         CurrentPresetName = presetName
                         config.biome_count = presetData.count
