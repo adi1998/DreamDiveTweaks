@@ -6,6 +6,7 @@ mod.BiomeCleanupData =
         {
             ["CurrentRun.ClosedDoors"] = {},
             ["CurrentRun.SpawnRecord.SoulPylon"] = 0,
+            ["CurrentRun.RoomHistory"] = {}
         }
     },
     H =
@@ -21,6 +22,7 @@ mod.BiomeCleanupData =
         {
             ["CurrentRun.CompletedStyxWings"] = 0,
             ["CurrentRun.ClosedDoors"] = {},
+            ["CurrentRun.RoomHistory"] = {}
         }
     },
     Tartarus =
@@ -89,6 +91,7 @@ function mod.CleanupBiomeVisit(roomSet)
         "EncountersOccurredCache",
         "EncountersCompletedCache",
         "EncountersDepthCache",
+        "EncountersOccurredBiomeCache",
     }
     local eraseEncounterFromArrays = {
     }
@@ -104,7 +107,7 @@ function mod.CleanupBiomeVisit(roomSet)
     for _, room in ipairs(mod.BiomeCleanupData[roomSet].Rooms) do
         writeEntryHelper(game.CurrentRun, eraseRoomFromLookups, room, nil)
     end
-    for path, value in ipairs(mod.BiomeCleanupData[roomSet].PathValueMap) do
+    for path, value in pairs(mod.BiomeCleanupData[roomSet].PathValueMap) do
         modutil.mod.Path.Set(path, value, game)
     end
     game.CurrentRun.BiomesReached[roomSet] = nil
