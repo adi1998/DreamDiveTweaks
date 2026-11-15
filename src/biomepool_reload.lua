@@ -209,7 +209,7 @@ function PurgeEasyBiomeZag()
 end
 
 PurgeZagBiomeSets()
-if mod.MaxAllowedBiomeCount == 12 then
+if mod.IsZag then
     UpdateZagBiomeSets()
 end
 
@@ -219,7 +219,7 @@ if config.biome_pool.larger_starting_pool then
 end
 
 PurgeEasyBiomeZag()
-if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
+if config.biome_pool.larger_starting_pool and mod.IsZag then
     UpdateEasyBiomeZag()
 end
 
@@ -240,11 +240,6 @@ function CopyCustomOrder(order)
 end
 
 function GetCustomOrder()
-    if not CheckOrderValid() then
-        game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Invalid custom order, resetting to default order", 3, { OffsetY = -60, SkipRise = true })
-        CopyCustomOrder(default_order)
-        config.biome_count = mod.MaxAllowedBiomeCount
-    end
     local route = {}
     for i = 1, config.biome_count do
         route[i] = config.biome_pool.custom_order_data[i..""]
@@ -257,42 +252,29 @@ function GenerateRoute()
     local startBiome
     local endBiome
     local biomeList = game.DeepCopyTable(all_biomes)
-    if config.biome_pool.easy_first_biome then
-        startBiome = mod.GetRandomTableValue(easy_biomes)
-        game.RemoveValueAndCollapse(biomeList, startBiome)
-    else
-        startBiome = mod.GetRandomTableValue(starting_biomes)
-        game.RemoveValueAndCollapse(biomeList, startBiome)
-    end
+    if not config.biome_pool.custom_order then
+        if config.biome_pool.easy_first_biome then
+            startBiome = mod.GetRandomTableValue(easy_biomes)
+            game.RemoveValueAndCollapse(biomeList, startBiome)
+        else
+            startBiome = mod.GetRandomTableValue(starting_biomes)
+            game.RemoveValueAndCollapse(biomeList, startBiome)
+        end
 
-    if config.biome_pool.hard_last_biome then
-        local hard_biome_copy = game.DeepCopyTable(hard_biomes)
-        game.RemoveValueAndCollapse(hard_biome_copy, startBiome)
+        if config.biome_pool.hard_last_biome then
+            local hard_biome_copy = game.DeepCopyTable(hard_biomes)
+            game.RemoveValueAndCollapse(hard_biome_copy, startBiome)
 
-        endBiome = mod.GetRandomTableValue(hard_biome_copy)
-        game.RemoveValueAndCollapse(biomeList, endBiome)
+            endBiome = mod.GetRandomTableValue(hard_biome_copy)
+            game.RemoveValueAndCollapse(biomeList, endBiome)
+        end
     end
 
     local route = {}
     if config.biome_pool.custom_order then
         route = GetCustomOrder()
-        if endBiome then
-            table.insert(biomeList, endBiome)
-            endBiome = nil
-        end
-
-        if startBiome then
-            table.insert(biomeList, startBiome)
-            startBiome = nil
-        end
-
-        local unique_biomemap = {}
         for index, value in ipairs(route) do
             game.RemoveValueAndCollapse(biomeList, value)
-            if unique_biomemap[value] then
-                route[index] = "Random"
-            end
-            unique_biomemap[value] = true
         end
     end
 
@@ -319,20 +301,23 @@ end
 
 function mod.SetupBiomeSets()
     -- clamp max biome count and configured biome count if we detect ZJ doesn't have its requirements met
+    local is_zag_real = mod.IsZag
     if mod.IsZag and (game.GameState.ModsNikkelMHadesBiomesClearedRunsCache or 0) < 1 then
         if config.biome_count > 8 then
             game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Complete a vanilla ZJ run to enable them for Dream Dives", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
             game.wait(0.01)
             game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Zagreus Journey biomes requirement not met", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
         end
-        mod.MaxAllowedBiomeCount = 8
+        mod.MaxAllowedBiomeCount = (config.custom_order and 12) or 8
         config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
+        is_zag_real = false
     elseif mod.IsZag then
         mod.MaxAllowedBiomeCount = 12
+        is_zag_real = true
     end
 
     PurgeZagBiomeSets()
-    if mod.MaxAllowedBiomeCount == 12 then
+    if is_zag_real then
         UpdateZagBiomeSets()
     end
 
@@ -342,7 +327,7 @@ function mod.SetupBiomeSets()
     end
 
     PurgeEasyBiomeZag()
-    if config.biome_pool.larger_starting_pool and mod.MaxAllowedBiomeCount == 12 then
+    if config.biome_pool.larger_starting_pool and is_zag_real then
         UpdateEasyBiomeZag()
     end
 end
@@ -355,11 +340,10 @@ mod.SelectNextDreamBiomeWrap = function (base, source, args)
         game.CurrentRun[_PLUGIN.guid .. "StoredFullBiomeCount"] = config.biome_count
         config.biome_count = #game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]
     end
-
+    local nextRoomSet = nil
     -- only run this if starting a new run or in the middle of a DreamDiveTweaks modded run
     if game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"] or (game.CurrentRun.EnteredBiomes or 0) == 0 then
         args = args or {}
-        local nextRoomSet = nil
 
         if game.IsEmpty( game.CurrentRun.DreamBiomePool ) then
             game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"], game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"] = GenerateRoute()
@@ -378,8 +362,17 @@ mod.SelectNextDreamBiomeWrap = function (base, source, args)
     end
 
     if game.CurrentRun.CurrentRoom.NextRoomSet[1] == nil then
-        print("nil NextRoomSet detected", dump(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]), dump(game.CurrentRun.BiomeVisitOrder), game.CurrentRun.EnteredBiomes, game.CurrentRun.DreamBiomePool)
+        rom.log.warning("nil NextRoomSet detected", dump(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]), dump(game.CurrentRun.BiomeVisitOrder), game.CurrentRun.EnteredBiomes, game.CurrentRun.DreamBiomePool)
         game.CurrentRun.CurrentRoom.NextRoomSet = { game.RemoveRandomValue( game.CurrentRun.DreamBiomePool ) or "F" }
+        nextRoomSet = game.CurrentRun.CurrentRoom.NextRoomSet[1]
+    end
+
+    if game.CurrentRun.BiomesReached[nextRoomSet] then
+        game.CurrentRun[_PLUGIN.guid .. "DuplicateBiomes"] = true
+        mod.CleanupBiomeVisit(nextRoomSet)
+        if nextRoomSet == "N" then
+            mod.CleanupBiomeVisit("N_SubRooms")
+        end
     end
 end
 
@@ -398,14 +391,13 @@ end
 
 CurrentPresetName = CurrentPresetName or "Underworld - Surface"
 
-CheckOrder = true
-IsOrderValid = true
-
 function DrawCustomOrderOptions()
 
     local value, checked = rom.ImGui.Checkbox("Custom biome order", config.biome_pool.custom_order)
     if checked then
         config.biome_pool.custom_order = value
+        mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
+        config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
     end
 
     if config.biome_pool.custom_order then
@@ -415,8 +407,8 @@ function DrawCustomOrderOptions()
         local clicked = rom.ImGui.Button("Reset Order")
         if clicked then
             CopyCustomOrder(default_order)
+            mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
             config.biome_count = mod.MaxAllowedBiomeCount
-            IsOrderValid = true
         end
 
         local notCollapsed1
@@ -458,14 +450,6 @@ function DrawCustomOrderOptions()
                 end
                 rom.ImGui.EndCombo()
             end
-        end
-
-        if CheckOrder then
-            IsOrderValid = CheckOrderValid()
-            CheckOrder = false
-        end
-        if not IsOrderValid then
-            rom.ImGui.Text("WARNING: Invalid custom order, will be\nreverted to default order on run start")
         end
 
         rom.ImGui.Text("Select order preset")

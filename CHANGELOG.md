@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Allow duplicate biomes in custom order.
+
 ## [1.13.8] - 2026-10-29
 
 - Adjust scaling for Hades and Minotaur.
