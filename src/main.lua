@@ -121,7 +121,7 @@ local function on_ready()
 
     mod.IsZag = mod.IsZagAvailable and (not config.biome_pool.disable_zag_biomes)
 
-    mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
+    mod.MaxAllowedBiomeCount = ((mod.IsZag or config.biome_pool.custom_order) and 12) or 8
 
     import 'visage.lua'
     import 'harvest.lua'

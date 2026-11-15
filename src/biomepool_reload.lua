@@ -313,7 +313,7 @@ function mod.SetupBiomeSets()
             game.wait(0.01)
             game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Zagreus Journey biomes requirement not met", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
         end
-        mod.MaxAllowedBiomeCount = (config.custom_order and 12) or 8
+        mod.MaxAllowedBiomeCount = (config.biome_pool.custom_order and 12) or 8
         config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
         is_zag_real = false
     elseif mod.IsZag then
@@ -400,7 +400,7 @@ function DrawCustomOrderOptions()
     local value, checked = rom.ImGui.Checkbox("Custom biome order", config.biome_pool.custom_order)
     if checked then
         config.biome_pool.custom_order = value
-        mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
+        mod.MaxAllowedBiomeCount = ((mod.IsZag or config.biome_pool.custom_order) and 12) or 8
         config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
     end
 
@@ -411,7 +411,7 @@ function DrawCustomOrderOptions()
         local clicked = rom.ImGui.Button("Reset Order")
         if clicked then
             CopyCustomOrder(default_order)
-            mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
+            mod.MaxAllowedBiomeCount = ((mod.IsZag or config.biome_pool.custom_order) and 12) or 8
             config.biome_count = mod.MaxAllowedBiomeCount
             IsOrderValid = true
         end
