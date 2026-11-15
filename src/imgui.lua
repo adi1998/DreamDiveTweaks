@@ -45,6 +45,7 @@ function DrawMenu()
                     mod.IsZag = not value
                     mod.MaxAllowedBiomeCount = ((mod.IsZag or config.custom_order) and 12) or 8
                     config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
+                    CheckOrder = true
 
                     PurgeZagBiomeSets()
                     if mod.IsZag then
