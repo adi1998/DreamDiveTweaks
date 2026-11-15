@@ -63,7 +63,7 @@ for _, functionName in ipairs(NPC_fucntions) do
             return mod.OpenUpgradeChoiceMenu_NPC(base, source, args)
         end)
         modutil.mod.Path.Wrap("RandomSynchronize", function (base, offset, rngId)
-            if game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] then
+            if game.CurrentRun[_PLUGIN.guid .. "EndlessStarted"] or game.CurrentRun[_PLUGIN.guid .. "DuplicateBiomes"] then
                 return base(math.random(1,9), rngId)
             end
             return base(offset, rngId)

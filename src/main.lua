@@ -121,7 +121,7 @@ local function on_ready()
 
     mod.IsZag = mod.IsZagAvailable and (not config.biome_pool.disable_zag_biomes)
 
-    mod.MaxAllowedBiomeCount = (mod.IsZag and 12) or 8
+    mod.MaxAllowedBiomeCount = ((mod.IsZag or config.biome_pool.custom_order) and 12) or 8
 
     import 'visage.lua'
     import 'harvest.lua'
@@ -152,6 +152,7 @@ local function on_reload()
     if config.enabled == false then return end
     import 'imgui.lua'
     import 'biomepool_reload.lua'
+    import 'biome_cleanup.lua'
 end
 
 local function on_ready_late()
