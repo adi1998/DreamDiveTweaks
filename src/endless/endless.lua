@@ -117,6 +117,7 @@ modutil.mod.Path.Wrap("SelectNextDreamBiome", function(base, source, args)
                 game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"],
                 game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"] or {}
             )
+            game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"] = game.GetAllValues(game.ToLookup(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"]))
             game.FYShuffle(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"])
             print("New shuffled biome order", dump(game.CurrentRun[_PLUGIN.guid .. "EndlessBiomePool"]))
             mod.CleanupBiomeVisits()

@@ -2,6 +2,7 @@
 
 ## [Unreleased]
 
+- Expand the `Random` option in custom order to include stuff like `Random - Surface` or `Random - Depth 1`.
 - Allow duplicate biomes in custom order.
 
 ## [1.13.8] - 2026-10-29
