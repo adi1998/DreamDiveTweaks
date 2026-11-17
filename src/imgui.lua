@@ -47,6 +47,10 @@ function DrawMenu()
                     config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
                     CheckOrder = true
 
+                    if not mod.IsZag then
+                        ClearIllegalEntries()
+                    end
+
                     PurgeZagBiomeSets()
                     if mod.IsZag then
                         UpdateZagBiomeSets()

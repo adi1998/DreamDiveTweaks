@@ -163,6 +163,220 @@ local biomeDisplayNameMap = {
     ["Tartarus"] = "Tartarus (H1)"
 }
 
+local is_zag_real = mod.IsZag
+
+local random_biome_pools = {
+    -- route specific
+    ["Random - Underworld"] = {
+        {
+            Name = "F",
+        },
+        {
+            Name = "G",
+        },
+        {
+            Name = "H",
+        },
+        {
+            Name = "I"
+        },
+        Refreshable = true,
+        Priority = 30,
+    },
+    ["Random - Surface"] = {
+        {
+            Name = "N",
+        },
+        {
+            Name = "O",
+        },
+        {
+            Name = "P",
+        },
+        {
+            Name = "Q"
+        },
+        Refreshable = true,
+        Priority = 30,
+    },
+    ["Random - Nightmare (Hades 1)"] = {
+        {
+            Name = "Tartarus",
+        },
+        {
+            Name = "Asphodel",
+        },
+        {
+            Name = "Elysium",
+        },
+        {
+            Name = "Styx"
+        },
+        Refreshable = true,
+        IsZag = true,
+        Priority = 30,
+    },
+    -- depth specific
+    ["Random - Depth 1"] = {
+        {
+            Name = "F"
+        },
+        {
+            Name = "N"
+        },
+        {
+            Name = "Tartarus",
+            IsZag = true,
+        },
+        Priority = 20,
+    },
+    ["Random - Depth 2"] = {
+        {
+            Name = "G"
+        },
+        {
+            Name = "O"
+        },
+        {
+            Name = "Asphodel",
+            IsZag = true,
+        },
+        Priority = 20,
+    },
+    ["Random - Depth 3"] = {
+        {
+            Name = "H"
+        },
+        {
+            Name = "P"
+        },
+        {
+            Name = "Elysium",
+            IsZag = true,
+        },
+        Priority = 20,
+    },
+    ["Random - Depth 4"] = {
+        {
+            Name = "I"
+        },
+        {
+            Name = "Q"
+        },
+        {
+            Name = "Styx",
+            IsZag = true,
+        },
+        Priority = 20,
+    },
+    -- hard rivals
+    ["Random - Hard (VoR) (Chronos/Prom/Scylla/Hades/Asterius)"] = {
+        {
+            Name = "I"
+        },
+        {
+            Name = "G"
+        },
+        {
+            Name = "P"
+        },
+        {
+            Name = "Styx",
+            IsZag = true
+        },
+        {
+            Name = "Elysium",
+            IsZag = true,
+        },
+        Priority = 10
+    },
+    -- easy-ish
+    ["Random - Easy (Hecate/Cerberus/Poly/Furies)"] = {
+        {
+            Name = "F"
+        },
+        {
+            Name = "H"
+        },
+        {
+            Name = "Tartarus",
+            IsZag = true,
+        },
+        {
+            Name = "N",
+        },
+        Priority = 10
+    },
+    -- all
+    ["Random"] = {
+        {
+            Name = "F"
+        },
+        {
+            Name = "N"
+        },
+        {
+            Name = "Tartarus",
+            IsZag = true,
+        },
+        {
+            Name = "G"
+        },
+        {
+            Name = "O"
+        },
+        {
+            Name = "Asphodel",
+            IsZag = true,
+        },
+        {
+            Name = "H"
+        },
+        {
+            Name = "P"
+        },
+        {
+            Name = "Elysium",
+            IsZag = true,
+        },
+        {
+            Name = "I"
+        },
+        {
+            Name = "Q"
+        },
+        {
+            Name = "Styx",
+            IsZag = true,
+        },
+        Priority = 40,
+    }
+}
+
+local random_biome_pools_display_order = {
+    "Random",
+    "Random - Underworld",
+    "Random - Surface",
+    "Random - Nightmare (Hades 1)",
+    "Random - Depth 1",
+    "Random - Depth 2",
+    "Random - Depth 3",
+    "Random - Depth 4",
+    "Random - Hard (VoR) (Chronos/Prom/Scylla/Hades/Asterius)",
+    "Random - Easy (Hecate/Cerberus/Poly/Furies)",
+}
+
+setmetatable(random_biome_pools, {
+    __index = function (t, k)
+        return rawget(t,k) or {
+            {
+                Name = k
+            },
+            Priority = 0
+        }
+    end
+})
+
 local previousConfig = {biome_pool = {custom_order_data = {}}}
 
 function UpdateZagBiomeSets()
@@ -239,7 +453,88 @@ function CopyCustomOrder(order)
     end
 end
 
+function GetLegalRandomPools()
+    local processed_random_pool = {}
+    for randomPoolName, randomPoolData in pairs(random_biome_pools) do
+        if not randomPoolData.IsZag or is_zag_real then
+            processed_random_pool[randomPoolName] = {}
+            for _, biome in ipairs(randomPoolData) do
+                if not biome.IsZag or is_zag_real then
+                    table.insert(processed_random_pool[randomPoolName], biome)
+                end
+            end
+        end
+    end
+    return processed_random_pool
+end
+
+function RemoveBiomeFromEveryPool(biome_pools, biomeName)
+    for _, randomPoolData in pairs(biome_pools) do
+        for i = 1, #randomPoolData do
+            if randomPoolData[i].Name == biomeName then
+                game.RemoveIndexAndCollapse(randomPoolData, i)
+                break
+            end
+        end
+    end
+end
+
+function RefreshBiomePool(biome_pools, pool_name)
+    if biome_pools and biome_pools[pool_name] and game.IsEmpty(biome_pools[pool_name]) then
+        for _, biome in ipairs(random_biome_pools[pool_name]) do
+            if not biome.IsZag or is_zag_real then
+                table.insert(biome_pools[pool_name], biome)
+            end
+        end
+    end
+end
+
+function ProcessRandomPoolsInRoute(route)
+    local processesed_pool = GetLegalRandomPools()
+    game.RandomSynchronize(math.random(100))
+    for priority = 0, 100, 1 do
+        local indices = {}
+        for index, option in ipairs(route) do
+            if random_biome_pools[option].Priority == priority then
+                table.insert(indices, index)
+            end
+        end
+        game.FYShuffle(indices)
+        for _, index in ipairs(indices) do
+            local option = route[index]
+            if not processesed_pool[option] then -- option is a biome
+                RemoveBiomeFromEveryPool(processesed_pool, option)
+            else
+                local biomeList = processesed_pool[option]
+                if #biomeList == 0 then
+                    RefreshBiomePool(processesed_pool, option)
+                end
+                local randomIndex = math.random(1, #biomeList)
+                local biome = biomeList[randomIndex]
+                game.RemoveIndexAndCollapse(biomeList, randomIndex)
+                route[index] = biome.Name
+                RemoveBiomeFromEveryPool(processesed_pool, biome.Name)
+            end
+        end
+    end
+end
+
+function ClearIllegalEntries()
+    for i = 1, 12 do
+        if config.biome_pool.custom_order_data[i..""] == "Random - Nightmare (Hades 1)" or game.Contains({"Styx", "Tartarus", "Elysium", "Asphodel"}, config.biome_pool.custom_order_data[i..""]) then
+            config.biome_pool.custom_order_data[i..""] = "Random"
+        end
+    end
+end
+
+if not mod.IsZag then
+    ClearIllegalEntries()
+end
+
 function GetCustomOrder()
+    if not is_zag_real then
+        ClearIllegalEntries()
+    end
     if not CheckOrderValid() then
         game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Invalid custom order, resetting to default order", 3, { OffsetY = -60, SkipRise = true })
         CopyCustomOrder(default_order)
@@ -250,6 +545,7 @@ function GetCustomOrder()
         route[i] = config.biome_pool.custom_order_data[i..""]
     end
     print("custom GeneratedRoute", dump(route))
+    ProcessRandomPoolsInRoute(route)
     return route
 end
 
@@ -306,9 +602,8 @@ end
 
 function mod.SetupBiomeSets()
     -- clamp max biome count and configured biome count if we detect ZJ doesn't have its requirements met
-    local is_zag_real = mod.IsZag
     if mod.IsZag and (game.GameState.ModsNikkelMHadesBiomesClearedRunsCache or 0) < 1 then
-        if config.biome_count > 8 then
+        if config.biome_count > 8 and not config.biome_pool.custom_order then
             game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Complete a vanilla ZJ run to enable them for Dream Dives", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
             game.wait(0.01)
             game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Zagreus Journey biomes requirement not met", 6, { OffsetY = -120, UseProgressiveStack = true, PreDelay = 0.6, SkipRise = true })
@@ -383,7 +678,7 @@ end
 
 function CheckOrderValid()
     for i = 1, config.biome_count do
-        if not game.Contains(all_biomes, config.biome_pool.custom_order_data[i..""]) and config.biome_pool.custom_order_data[i..""] ~= "Random" then
+        if not game.Contains(all_biomes, config.biome_pool.custom_order_data[i..""]) and not random_biome_pools[config.biome_pool.custom_order_data[i..""]] then
             return false
         end
     end
@@ -437,12 +732,17 @@ function DrawCustomOrderOptions()
             end
 
             if drawCombo and rom.ImGui.BeginCombo("###biome"..depth, biomeDisplayNameMap[currentBiome] or currentBiome) then
-                if rom.ImGui.Selectable("Random", (currentBiome == "Random")) and previousConfig.biome_pool.custom_order_data[depth..""] ~= "Random" then
-                    config.biome_pool.custom_order_data[depth..""] = "Random"
-                    previousConfig.biome_pool.custom_order_data[depth..""] = "Random"
-                    currentBiome = "Random"
-                    CheckOrder = true
-                    rom.ImGui.SetItemDefaultFocus()
+                for _, randomPoolName in ipairs(random_biome_pools_display_order) do
+                    local randomPoolData = rawget(random_biome_pools, randomPoolName)
+                    if not randomPoolData.IsZag or mod.IsZag then
+                        if rom.ImGui.Selectable(randomPoolName, (currentBiome == randomPoolName)) and previousConfig.biome_pool.custom_order_data[depth..""] ~= randomPoolName then
+                            config.biome_pool.custom_order_data[depth..""] = randomPoolName
+                            previousConfig.biome_pool.custom_order_data[depth..""] = randomPoolName
+                            currentBiome = randomPoolName
+                            CheckOrder = true
+                            rom.ImGui.SetItemDefaultFocus()
+                        end
+                    end
                 end
                 for _, biome in ipairs(all_biomes) do
                     if rom.ImGui.Selectable(biomeDisplayNameMap[biome] or biome, (currentBiome == biome)) and previousConfig.biome_pool.custom_order_data[depth..""] ~= biome then
@@ -475,6 +775,9 @@ function DrawCustomOrderOptions()
                         CopyCustomOrder(presetData.order)
                         rom.ImGui.SetItemDefaultFocus()
                         CheckOrder = true
+                        if not mod.IsZag then
+                            ClearIllegalEntries()
+                        end
                     end
                 end
             end
