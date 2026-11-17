@@ -22,6 +22,17 @@ Use the Imgui menu (default toggle keybind: INSERT) in the Crossroads training g
 
 ![imgui2](images/imgui2.png)
 
+### Custom order
+
+You can also define custom region order. The options are processed in the order:
+
+- Specified single region
+- Random - Hard/Easy
+- Random - Depth X (X = 1-4)
+- Random - `Route` (`Route` can be `Surface`, `Underworld`, `Nightmare (Hades 1)`)
+- Random - Underworld/Surface (only shows up if Zagreus' Journey is installed)
+- Random
+
 ### Endless mode
 
 The mod also offers an option for endless mode once a regular run has been completed. This puts every available legal biome into the pool. You can end an endless run anytime by holding down `Gift + Salute` for 1 second.

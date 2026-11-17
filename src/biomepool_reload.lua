@@ -216,7 +216,7 @@ local random_biome_pools = {
         IsZag = true,
         Priority = 30,
     },
-    ["Random - UW/Surface (Hades 2)"] = {
+    ["Random - Underworld/Surface"] = {
         {
             Name = "F",
         },
@@ -386,8 +386,8 @@ local random_biome_pools_display_order = {
     "Random",
     "Random - Underworld",
     "Random - Surface",
-    "Random - UW/Surface (Hades 2)",
     "Random - Nightmare (Hades 1)",
+    "Random - Underworld/Surface",
     "Random - Depth 1",
     "Random - Depth 2",
     "Random - Depth 3",
