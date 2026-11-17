@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.14.0] - 2026-11-17
+
 - Expand the `Random` option in custom order to include stuff like `Random - Surface` or `Random - Depth 1`.
 - Allow duplicate biomes in custom order.
 
@@ -195,7 +197,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.8...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.14.0...HEAD
+[1.14.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.8...1.14.0
 [1.13.8]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.7...1.13.8
 [1.13.7]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.6...1.13.7
 [1.13.6]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.5...1.13.6
