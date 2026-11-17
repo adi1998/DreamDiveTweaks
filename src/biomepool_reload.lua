@@ -216,6 +216,35 @@ local random_biome_pools = {
         IsZag = true,
         Priority = 30,
     },
+    ["Random - UW/Surface (Hades 2)"] = {
+        {
+            Name = "F",
+        },
+        {
+            Name = "G",
+        },
+        {
+            Name = "H",
+        },
+        {
+            Name = "I"
+        },
+        {
+            Name = "N",
+        },
+        {
+            Name = "O",
+        },
+        {
+            Name = "P",
+        },
+        {
+            Name = "Q"
+        },
+        Refreshable = true,
+        Priority = 31,
+        IsZag = true,
+    },
     -- depth specific
     ["Random - Depth 1"] = {
         {
@@ -357,6 +386,7 @@ local random_biome_pools_display_order = {
     "Random",
     "Random - Underworld",
     "Random - Surface",
+    "Random - UW/Surface (Hades 2)",
     "Random - Nightmare (Hades 1)",
     "Random - Depth 1",
     "Random - Depth 2",
