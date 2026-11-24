@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Combo breakers now trigger based on ratio of max health instead of a flat damage amount.
+
 ## [1.14.0] - 2026-11-17
 
 - Expand the `Random` option in custom order to include stuff like `Random - Surface` or `Random - Depth 1`.

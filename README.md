@@ -50,6 +50,7 @@ Unlock requirements:
 - If harvesting points are enabled Plentiful Forage will also become elligible in Dream Dives.
 - Secret bosses will start scaling up from the 4th biome.
 - Vow or Rivals scales proportionally to the number of biomes, so an 8 biome run with VoR set to 2 will have the first 4 bosses be Unrivaled.
+- The mod scales the combo breaker thresholds for al VoR bosses based on their max health instead of a fiat damage amount.
 
 ## Issues and feedback
 
