@@ -407,8 +407,6 @@ setmetatable(random_biome_pools, {
     end
 })
 
-local previousConfig = {biome_pool = {custom_order_data = {}}}
-
 function UpdateZagBiomeSets()
     table.insert(hard_biomes, "Styx")
     table.insert(hard_biomes, "Elysium")
@@ -561,18 +559,27 @@ if not mod.IsZag then
     ClearIllegalEntries()
 end
 
+function GetLegalCustomOption(name)
+    if is_zag_real and game.Contains({"Styx", "Tartarus", "Elysium", "Asphodel"}, name) then
+        return name
+    end
+    if game.Contains(all_biomes, name) then
+        return name
+    end
+    local pool = rawget(random_biome_pools, name)
+    if pool and (not pool.IsZag or is_zag_real) then
+        return name
+    end
+    return "Random"
+end
+
 function GetCustomOrder()
     if not is_zag_real then
         ClearIllegalEntries()
     end
-    if not CheckOrderValid() then
-        game.thread(game.InCombatText, game.CurrentRun.Hero.ObjectId, "Invalid custom order, resetting to default order", 3, { OffsetY = -60, SkipRise = true })
-        CopyCustomOrder(default_order)
-        config.biome_count = mod.MaxAllowedBiomeCount
-    end
     local route = {}
     for i = 1, config.biome_count do
-        route[i] = config.biome_pool.custom_order_data[i..""]
+        route[i] = GetLegalCustomOption(config.biome_pool.custom_order_data[i..""])
     end
     print("custom GeneratedRoute", dump(route))
     ProcessRandomPoolsInRoute(route)
@@ -644,6 +651,10 @@ function mod.SetupBiomeSets()
     elseif mod.IsZag then
         mod.MaxAllowedBiomeCount = 12
         is_zag_real = true
+    else
+        mod.MaxAllowedBiomeCount = (config.biome_pool.custom_order and 12) or 8
+        config.biome_count = math.min(config.biome_count, mod.MaxAllowedBiomeCount)
+        is_zag_real = false
     end
 
     PurgeZagBiomeSets()
@@ -765,9 +776,8 @@ function DrawCustomOrderOptions()
                 for _, randomPoolName in ipairs(random_biome_pools_display_order) do
                     local randomPoolData = rawget(random_biome_pools, randomPoolName)
                     if not randomPoolData.IsZag or mod.IsZag then
-                        if rom.ImGui.Selectable(randomPoolName, (currentBiome == randomPoolName)) and previousConfig.biome_pool.custom_order_data[depth..""] ~= randomPoolName then
+                        if rom.ImGui.Selectable(randomPoolName, (currentBiome == randomPoolName)) and config.biome_pool.custom_order_data[depth..""] ~= randomPoolName then
                             config.biome_pool.custom_order_data[depth..""] = randomPoolName
-                            previousConfig.biome_pool.custom_order_data[depth..""] = randomPoolName
                             currentBiome = randomPoolName
                             CheckOrder = true
                             rom.ImGui.SetItemDefaultFocus()
@@ -775,9 +785,8 @@ function DrawCustomOrderOptions()
                     end
                 end
                 for _, biome in ipairs(all_biomes) do
-                    if rom.ImGui.Selectable(biomeDisplayNameMap[biome] or biome, (currentBiome == biome)) and previousConfig.biome_pool.custom_order_data[depth..""] ~= biome then
+                    if rom.ImGui.Selectable(biomeDisplayNameMap[biome] or biome, (currentBiome == biome)) and config.biome_pool.custom_order_data[depth..""] ~= biome then
                         config.biome_pool.custom_order_data[depth..""] = biome
-                        previousConfig.biome_pool.custom_order_data[depth..""] = biome
                         currentBiome = biome
                         CheckOrder = true
                         rom.ImGui.SetItemDefaultFocus()
