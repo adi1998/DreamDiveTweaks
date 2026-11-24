@@ -6,21 +6,6 @@ local starting_biomes = {"I", "Q", "H", "P", "G", "O"}
 
 local all_biomes = {"F", "G", "H", "I", "N", "O", "P", "Q"}
 
-local default_order = {
-    ["1"] = "Random",
-    ["2"] = "Random",
-    ["3"] = "Random",
-    ["4"] = "Random",
-    ["5"] = "Random",
-    ["6"] = "Random",
-    ["7"] = "Random",
-    ["8"] = "Random",
-    ["9"] = "Random",
-    ["10"] = "Random",
-    ["11"] = "Random",
-    ["12"] = "Random",
-}
-
 local preset_orders = {
     ["Underworld - Surface"] = {
         order = {
@@ -473,11 +458,15 @@ function mod.GetRandomTableValue(tableArg)
     end
 end
 
-function CopyCustomOrder(order)
+function CopyCustomOrder(preset)
+    local order = preset.order
     for key, value in pairs(order) do
         if config.biome_pool.custom_order_data[key] then
             config.biome_pool.custom_order_data[key] = value
         end
+    end
+    for i = preset.count + 1, 12 do
+        config.biome_pool.custom_order_data[i .. ""] = "Random"
     end
 end
 
@@ -717,19 +706,7 @@ mod.SelectNextDreamBiomeWrap = function (base, source, args)
     end
 end
 
-function CheckOrderValid()
-    for i = 1, config.biome_count do
-        if not game.Contains(all_biomes, config.biome_pool.custom_order_data[i..""]) and not random_biome_pools[config.biome_pool.custom_order_data[i..""]] then
-            return false
-        end
-    end
-    return true
-end
-
 CurrentPresetName = CurrentPresetName or "Underworld - Surface"
-
-CheckOrder = true
-IsOrderValid = true
 
 function DrawCustomOrderOptions()
 
@@ -746,10 +723,9 @@ function DrawCustomOrderOptions()
 
         local clicked = rom.ImGui.Button("Reset Order")
         if clicked then
-            CopyCustomOrder(default_order)
+            CopyCustomOrder(preset_orders["Random - 12"])
             mod.MaxAllowedBiomeCount = ((mod.IsZag or config.biome_pool.custom_order) and 12) or 8
             config.biome_count = mod.MaxAllowedBiomeCount
-            IsOrderValid = true
         end
 
         local notCollapsed1
@@ -779,7 +755,6 @@ function DrawCustomOrderOptions()
                         if rom.ImGui.Selectable(randomPoolName, (currentBiome == randomPoolName)) and config.biome_pool.custom_order_data[depth..""] ~= randomPoolName then
                             config.biome_pool.custom_order_data[depth..""] = randomPoolName
                             currentBiome = randomPoolName
-                            CheckOrder = true
                             rom.ImGui.SetItemDefaultFocus()
                         end
                     end
@@ -788,7 +763,6 @@ function DrawCustomOrderOptions()
                     if rom.ImGui.Selectable(biomeDisplayNameMap[biome] or biome, (currentBiome == biome)) and config.biome_pool.custom_order_data[depth..""] ~= biome then
                         config.biome_pool.custom_order_data[depth..""] = biome
                         currentBiome = biome
-                        CheckOrder = true
                         rom.ImGui.SetItemDefaultFocus()
                     end
                 end
@@ -796,27 +770,15 @@ function DrawCustomOrderOptions()
             end
         end
 
-        if CheckOrder then
-            IsOrderValid = CheckOrderValid()
-            CheckOrder = false
-        end
-        if not IsOrderValid then
-            rom.ImGui.Text("WARNING: Invalid custom order, will be\nreverted to default order on run start")
-        end
-
         rom.ImGui.Text("Select order preset")
         if rom.ImGui.BeginCombo("###biomeorderpreset", CurrentPresetName) then
             for presetName, presetData in pairs(preset_orders) do
                 if presetData.count <= mod.MaxAllowedBiomeCount and (not presetData.zag or mod.IsZag) then
-                    if rom.ImGui.Selectable(presetName, (CurrentPresetName == presetName)) then
+                    if rom.ImGui.Selectable(presetName, (CurrentPresetName == presetName)) and CurrentPresetName ~= presetName then
                         CurrentPresetName = presetName
                         config.biome_count = presetData.count
-                        CopyCustomOrder(presetData.order)
+                        CopyCustomOrder(presetData)
                         rom.ImGui.SetItemDefaultFocus()
-                        CheckOrder = true
-                        if not mod.IsZag then
-                            ClearIllegalEntries()
-                        end
                     end
                 end
             end
