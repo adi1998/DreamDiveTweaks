@@ -91,7 +91,7 @@ function DrawMenu()
                 rom.ImGui.Text("  Zagreus' Journey biomes: " .. tostring(not config.biome_pool.disable_zag_biomes))
             end
             rom.ImGui.Text("  Deterministic biome order: "..tostring(config.biome_pool.deterministic_biome_order))
-            rom.ImGui.Text("  Allow Erebus and Ephyra in 1st biome: "..tostring(config.biome_pool.larger_starting_pool))
+            rom.ImGui.Text("  Allow Erebus and Ephyra as the 1st biome: "..tostring(config.biome_pool.larger_starting_pool))
             rom.ImGui.Text("  Easy first biome: "..tostring(config.biome_pool.easy_first_biome))
             rom.ImGui.Text("  Hard last biome: "..tostring(config.biome_pool.hard_last_biome))
             rom.ImGui.Text("  Custom order: "..tostring(config.biome_pool.custom_order))
@@ -281,10 +281,4 @@ ImguiPluginMap = ImguiPluginMap or {}
 
 public.RegisterPluginImGui = function (drawFunc, pluginKey)
     ImguiPluginMap[pluginKey] = drawFunc
-end
-
-if game.CurrentRun then
-    print(mod.IsZag, mod.MaxAllowedBiomeCount)
-    print(dump(game.CurrentRun[_PLUGIN.guid .. "GeneratedRoute"]))
-    print(dump(game.CurrentRun[_PLUGIN.guid .. "UnusedBiomes"]))
 end
