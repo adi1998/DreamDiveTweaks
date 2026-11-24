@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.15.0] - 2026-11-24
+
 - Combo breakers now trigger based on ratio of max health instead of a flat damage amount.
 - Custom order bug fixes.
 
@@ -200,7 +202,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.14.0...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.15.0...HEAD
+[1.15.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.14.0...1.15.0
 [1.14.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.8...1.14.0
 [1.13.8]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.7...1.13.8
 [1.13.7]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.6...1.13.7
