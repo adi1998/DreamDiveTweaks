@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 - Combo breakers now trigger based on ratio of max health instead of a flat damage amount.
-- Minor custom order fixes.
+- Custom order bug fixes.
 
 ## [1.14.0] - 2026-11-17
 

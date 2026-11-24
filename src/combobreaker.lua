@@ -16,6 +16,7 @@ modutil.mod.Path.Wrap("CheckComboBreakerDamageInWindow", function (base, victim,
     if victim and vanillaComboBreakerRatio[victim.Name] and not args[_PLUGIN.guid .. "ScaledComboBreakerData"] then
         local ratio = vanillaComboBreakerRatio[victim.Name]
         local max_health = victim.MaxHealth
+        print("scaling ComboBreakerData for", victim.Name, "before:", args.Threshold, ", after:", max_health * ratio)
         args.Threshold = max_health * ratio
         args[_PLUGIN.guid .. "ScaledComboBreakerData"] = true
     end
