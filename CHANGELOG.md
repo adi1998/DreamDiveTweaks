@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+## [1.16.0] - 2026-11-25
+
 - Add option to allow Blood Triad to be boosted by global damage bonuses. This will only take effect from region 5.
 
 ## [1.15.0] - 2026-11-24
@@ -204,7 +206,8 @@
 
 - First version of the mod!
 
-[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.15.0...HEAD
+[unreleased]: https://github.com/adi1998/DreamDiveTweaks/compare/1.16.0...HEAD
+[1.16.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.15.0...1.16.0
 [1.15.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.14.0...1.15.0
 [1.14.0]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.8...1.14.0
 [1.13.8]: https://github.com/adi1998/DreamDiveTweaks/compare/1.13.7...1.13.8
