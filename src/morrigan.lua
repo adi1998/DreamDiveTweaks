@@ -10,5 +10,11 @@ setmetatable(game.ProjectileData.WomboStrike, {
             return game.CurrentHubRoom ~= nil or not isMorriganBoostActive()
         end
         return rawget(t, k)
+    end,
+
+    __newindex = function (t, k, v)
+        if k ~= "IgnoreAllModifiers" then
+            rawset(t, k, v)
+        end
     end
 })
