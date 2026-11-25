@@ -138,6 +138,7 @@ local function on_ready()
     import 'npc_scaling.lua'
     import 'dodge.lua'
     import 'scorch.lua'
+    import 'morrigan.lua'
 
     import 'biomepool_ready.lua'
 

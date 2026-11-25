@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Add option to allow Blood Triad to be boosted by global damage bonuses. This will only take effect from region 5.
+
 ## [1.15.0] - 2026-11-24
 
 - Combo breakers now trigger based on ratio of max health instead of a flat damage amount.

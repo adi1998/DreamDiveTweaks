@@ -112,6 +112,20 @@ function DrawMenu()
             config.increase_scorch_cap = value
         end
 
+        value, checked = rom.ImGui.Checkbox("Allow Blood Triad to be boosted by global damage bonuses", config.morrigan_dmg_boost)
+        if checked then
+            config.morrigan_dmg_boost = value
+        end
+
+        if config.morrigan_dmg_boost then
+            rom.ImGui.Text("Region where it starts being boosted:")
+            value, selected = rom.ImGui.SliderInt("###morrigan", config.morrigan_dmg_boost_start, 5, 12, '%d%')
+            if selected and value ~= config.morrigan_dmg_boost_start then
+                config.morrigan_dmg_boost_start = value
+                scaling_applied = nil
+            end
+        end
+
         rom.ImGui.Separator()
         rom.ImGui.Text("Late biome scaling ramp up adjustment")
         rom.ImGui.Text("This adjustment is in addition to the scaling data present in the mod")
