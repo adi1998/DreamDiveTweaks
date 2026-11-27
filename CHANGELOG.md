@@ -2,6 +2,8 @@
 
 ## [Unreleased]
 
+- Fix Moon Beam not giving bonus Path of Star points immediately.
+
 ## [1.16.0] - 2026-11-25
 
 - Add option to allow Blood Triad to be boosted by global damage bonuses. This will only take effect from region 5.

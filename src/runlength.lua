@@ -500,6 +500,8 @@ modutil.mod.Path.Wrap("StartRoom", function (base, currentRun, currentRoom)
     return ( function (returnval)
         if currentRoom.BiomeStartRoom and currentRun[_PLUGIN.guid .. "TriggerKeepsakeAcquireSpellDropInIntro"] and game.HeroHasTrait("SpellTalentKeepsake") then
             local trait = game.GetHeroTrait("SpellTalentKeepsake")
+            trait.AcquireFunctionArgs = game.DeepCopyTable(trait.AcquireFunctionArgs) or {}
+            trait.AcquireFunctionArgs[_PLUGIN.guid .. "SkipAddTalentPoints"] = true
             game.KeepsakeAcquireSpellDrop(trait.AcquireFunctionArgs, trait)
             print("resetting TriggerKeepsakeAcquireSpellDropInIntro")
             currentRun[_PLUGIN.guid .. "TriggerKeepsakeAcquireSpellDropInIntro"] = nil
@@ -513,9 +515,18 @@ modutil.mod.Path.Wrap("KeepsakeAcquireSpellDrop", function (base, args, trait)
     if game.CurrentRun.CurrentRoom and game.Contains(args[_PLUGIN.guid .. "PostponePriorityRewardSelectionInRooms"] or {}, game.CurrentRun.CurrentRoom.Name) then
         print("setting TriggerKeepsakeAcquireSpellDropInIntro")
 		game.CurrentRun[_PLUGIN.guid .. "TriggerKeepsakeAcquireSpellDropInIntro"] = true
+        game.AddTalentPoints( args, trait )
 		return
 	end
     return base(args, trait)
+end)
+
+modutil.mod.Path.Wrap("AddTalentPoints", function (base, args, traitData)
+    args = args or {}
+    if args[_PLUGIN.guid .. "SkipAddTalentPoints"] then
+        return
+    end
+    return base(args, traitData)
 end)
 
 --#endregion
